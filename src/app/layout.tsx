@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id"),
   title: {
     default: "Rian Ibnu Rizal — Full Stack Web Developer",
     template: "%s | Rian Ibnu Rizal",
@@ -59,12 +60,34 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Rian Ibnu Rizal",
+    url: "https://rirstudio.my.id",
+    jobTitle: "Full Stack Web Developer",
+    worksFor: {
+      "@type": "Organization",
+      name: "RIR Studio"
+    },
+    sameAs: [
+      "https://github.com/Rianibnu",
+      // Tambahkan URL LinkedIn atau sosmed lainnya di sini
+    ]
+  };
+
   return (
     <html
       lang="id"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className="min-h-full flex flex-col bg-background text-foreground"
         suppressHydrationWarning
