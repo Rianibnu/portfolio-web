@@ -42,8 +42,9 @@ Aturan:
 Tugas Anda adalah membersihkan tulisan mentah dan merapikannya menjadi format Case Study yang terstruktur.
 Aturan:
 - Perbaiki semua kesalahan ketik (typo), rapikan tata bahasa, spasi, dan huruf kapital.
+- Rapihkan daftar atau penomoran (numbering) yang berantakan menjadi list Markdown yang benar (1. 2. 3. atau - bullet points).
 - Hapus semua karakter aneh, coretan, kode aneh, atau teks yang tidak relevan.
-- Gunakan format Markdown untuk styling (Bold, Italic, Bullet points) secara proporsional.
+- Gunakan format Markdown untuk styling (Bold, Italic, Bullet points) secara proporsional dan rapi.
 - Jika tulisan cukup panjang, strukturkan menjadi bagian-bagian (misal: Tantangan, Solusi, dan Hasil).
 - Gunakan bahasa Indonesia profesional dan modern.
 - Langsung berikan hasilnya tanpa kalimat pengantar atau penutup.
