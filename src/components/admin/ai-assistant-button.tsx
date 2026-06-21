@@ -7,9 +7,10 @@ interface AIAssistantButtonProps {
   onGenerated: (text: string) => void;
   currentText: string;
   type: "short_description" | "full_content";
+  context?: "project" | "blog";
 }
 
-export default function AIAssistantButton({ onGenerated, currentText, type }: AIAssistantButtonProps) {
+export default function AIAssistantButton({ onGenerated, currentText, type, context = "project" }: AIAssistantButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +27,7 @@ export default function AIAssistantButton({ onGenerated, currentText, type }: AI
       const response = await fetch("/api/ai/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: currentText, type }),
+        body: JSON.stringify({ prompt: currentText, type, context }),
       });
 
       const data = await response.json();

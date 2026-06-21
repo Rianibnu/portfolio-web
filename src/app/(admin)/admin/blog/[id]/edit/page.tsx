@@ -87,6 +87,7 @@ export default async function EditPostPage({
               className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none resize-none"
               placeholder="Brief summary of this blog post..."
               type="short_description"
+              context="blog"
             />
           </div>
 
@@ -103,6 +104,7 @@ export default async function EditPostPage({
               className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none font-mono text-sm"
               placeholder={"Write your article content here...\n\n## Section Heading\n\nYour paragraph text goes here."}
               type="full_content"
+              context="blog"
             />
           </div>
 

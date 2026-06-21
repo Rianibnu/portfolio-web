@@ -12,6 +12,7 @@ interface AiTextAreaProps {
   placeholder?: string;
   defaultValue?: string;
   type: "short_description" | "full_content";
+  context?: "project" | "blog";
 }
 
 export default function AiTextArea({
@@ -23,6 +24,7 @@ export default function AiTextArea({
   placeholder,
   defaultValue = "",
   type,
+  context = "project",
 }: AiTextAreaProps) {
   const [text, setText] = useState(defaultValue);
 
@@ -31,6 +33,7 @@ export default function AiTextArea({
       <AIAssistantButton
         currentText={text}
         type={type}
+        context={context}
         onGenerated={(newText) => setText(newText)}
       />
       <textarea
