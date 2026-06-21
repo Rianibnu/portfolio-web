@@ -9,7 +9,7 @@ import { prisma } from "@/lib/prisma";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { PrismAsyncLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import ShareButtons from "@/components/ui/share-buttons";
 
