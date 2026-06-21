@@ -3,6 +3,7 @@ import Image from "next/image";
 import SectionWrapper from "@/components/layout/section-wrapper";
 import SectionHeading from "@/components/ui/section-heading";
 import ExperienceTimeline from "@/components/sections/experience-timeline";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "About",
@@ -22,7 +23,9 @@ const interests = [
   "IT Support",
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const projectCount = await prisma.project.count();
+
   return (
     <main>
       {/* Hero Section */}
@@ -55,9 +58,9 @@ export default function AboutPage() {
               <div className="flex flex-wrap gap-6 md:gap-8 pt-6 border-t border-glass-border">
                 {[
                   { value: "4+", label: "Tahun Pengalaman" },
-                  { value: "15+", label: "Proyek Dibangun" },
-                  { value: "S.T", label: "Teknik Informatika" },
-                ].map((stat) => (
+                  { value: `${projectCount}+`, label: "Proyek Diselesaikan" },
+                  { value: "10+", label: "Klien Puas" },
+                ].map((stat, i) => (
                   <div key={stat.label} className="flex flex-col gap-1">
                     <div className="text-3xl font-bold tracking-tight text-foreground">{stat.value}</div>
                     <div className="text-xs font-semibold tracking-wider uppercase text-foreground-subtle">{stat.label}</div>
