@@ -54,7 +54,7 @@ export default function Footer() {
             </Link>
             <p className="text-sm text-foreground-muted leading-relaxed font-light">
               Full Stack Web Developer & IT Support. Ahli membangun solusi digital efisien
-              menggunakan Laravel, VueJS, PostgreSQL, dan MySQL.
+              menggunakan Technology Modern.
             </p>
           </div>
 
