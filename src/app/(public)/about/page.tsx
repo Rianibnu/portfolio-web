@@ -99,7 +99,7 @@ export default function AboutPage() {
         <div className="container-custom">
           <SectionHeading
             title="Minat & Ketertarikan"
-            subtitle="Topik dan bidang yang menarik bagi saya di luar kode."
+            subtitle="Topik dan bidang yang menarik bagi saya."
           />
           <div className="flex flex-wrap justify-center gap-3 max-w-2xl mx-auto">
             {interests.map((interest) => (
