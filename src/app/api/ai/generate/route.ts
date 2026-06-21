@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import fetch from "node-fetch";
 
 export async function POST(request: Request) {
   try {
@@ -22,7 +23,12 @@ export async function POST(request: Request) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+    
+    // Gunakan node-fetch untuk mem-bypass bug IPv6 di fetch bawaan Node.js/Undici
+    const model = genAI.getGenerativeModel(
+      { model: "gemini-flash-latest" },
+      { customFetch: fetch as any }
+    );
 
     let systemPrompt = "Anda adalah asisten penulis profesional.";
     
