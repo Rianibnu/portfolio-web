@@ -30,7 +30,7 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen flex bg-background">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-glass-border bg-background hidden md:flex flex-col">
+      <aside className="w-64 border-r border-glass-border bg-background hidden md:flex flex-col sticky top-0 h-screen">
         <div className="h-20 flex items-center px-8 border-b border-glass-border">
           <Link href="/" className="flex items-center gap-2 group">
             <Code2 className="w-6 h-6 text-foreground transition-transform group-hover:rotate-12" />
