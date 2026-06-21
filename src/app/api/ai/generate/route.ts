@@ -50,6 +50,8 @@ Aturan:
     // Paksa menggunakan IPv4 karena VPS IDCloudHost sering bermasalah dengan rute IPv6 Node.js
     const agent = new https.Agent({ family: 4 });
 
+    const fullPrompt = `${systemPrompt}\n\nInput dari pengguna:\n${prompt}`;
+
     // Gunakan raw REST API call dengan node-fetch untuk mem-bypass SDK
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
