@@ -50,7 +50,7 @@ export default function BlogCard({
       )}
 
       {/* Content */}
-      <div className="relative aspect-video w-full overflow-hidden">
+      <div className="flex flex-col flex-1 p-6 sm:p-8">
         {/* Meta */}
         <div className="flex items-center gap-4 text-xs font-medium uppercase tracking-wider text-foreground-subtle mb-4">
           <span>{formatDate(publishedAt)}</span>
