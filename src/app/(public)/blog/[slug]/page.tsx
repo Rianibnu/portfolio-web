@@ -185,7 +185,6 @@ export default async function BlogPostPage({ params }: Props) {
               prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:marker:font-semibold
               prose-hr:border-glass-border prose-hr:my-12
               prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-foreground-muted
-              prose-code:text-accent-secondary prose-code:bg-background-tertiary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
               prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0
             ">
               {post.content ? (
@@ -196,19 +195,20 @@ export default async function BlogPostPage({ params }: Props) {
                     code({node, inline, className, children, ...props}: any) {
                       const match = /language-(\w+)/.exec(className || '')
                       return !inline && match ? (
-                        <div className="not-prose my-8 rounded-xl overflow-hidden border border-glass-border">
+                        <div className="my-8 rounded-xl overflow-hidden border border-glass-border bg-[#1E1E1E]">
                           <SyntaxHighlighter
                             {...props}
                             style={vscDarkPlus as any}
                             language={match[1]}
                             PreTag="div"
-                            customStyle={{ margin: 0, padding: '1.5rem', fontSize: '0.95rem', lineHeight: '1.7' }}
+                            customStyle={{ margin: 0, padding: '1.5rem', fontSize: '0.95rem', lineHeight: '1.7', background: 'transparent' }}
+                            codeTagProps={{ style: { background: 'transparent', padding: 0, borderRadius: 0 } }}
                           >
                             {String(children).replace(/\n$/, '')}
                           </SyntaxHighlighter>
                         </div>
                       ) : (
-                        <code {...props} className={className}>
+                        <code {...props} className="text-accent-secondary bg-background-tertiary px-1.5 py-0.5 rounded text-sm">
                           {children}
                         </code>
                       )
