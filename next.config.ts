@@ -4,12 +4,10 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    outputFileTracingExcludes: {
-      '*': [
-        './src/generated/client/**/*',
-      ],
-    },
+  outputFileTracingExcludes: {
+    '*': [
+      './src/generated/client/**/*',
+    ],
   },
   allowedDevOrigins: ["192.168.1.6"],
   images: {
