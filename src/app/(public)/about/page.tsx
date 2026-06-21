@@ -44,7 +44,7 @@ export default function AboutPage() {
 
               <div className="space-y-6 text-foreground-muted text-lg font-light leading-relaxed max-w-2xl">
                 <p>
-                  Saya <span className="font-semibold text-foreground">Rian Ibnu Rizal, S.T.</span> — lulusan S1 Teknik Informatika (IPK 3,47) serta <span className="font-semibold text-foreground">Founder RIR Studio</span>, dengan spesialisasi pengembangan aplikasi sebagai Full-Stack Developer dan manajemen IT Support/Helpdesk.
+                  <span className="font-semibold text-foreground">Rian Ibnu Rizal, S.T.</span> — lulusan S1 Teknik Informatika (IPK 3,47) serta <span className="font-semibold text-foreground">Founder RIR Studio</span>, dengan spesialisasi pengembangan aplikasi sebagai Full-Stack Developer dan manajemen IT Support/Helpdesk.
                 </p>
                 <p>
                   Berpengalaman dalam merancang flowmap bisnis, mengintegrasikan sistem kustom dengan vendor eksternal, serta memelihara infrastruktur jaringan demi menjamin stabilitas dan efisiensi operasional penuh.
