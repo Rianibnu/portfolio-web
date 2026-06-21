@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Sparkles } from "lucide-react";
 
-export default function Hero() {
+export default function Hero({ projectCount }: { projectCount?: number }) {
   return (
     <section className="relative min-h-[95vh] flex items-center overflow-hidden pt-32 pb-20">
       {/* Minimal Background Effects */}
@@ -90,7 +90,7 @@ export default function Hero() {
           >
             {[
               { value: "4+", label: "Tahun Pengalaman" },
-              { value: "15+", label: "Proyek Diselesaikan" },
+              { value: `${projectCount || 15}+`, label: "Proyek Diselesaikan" },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col gap-1">
                 <span className="text-3xl font-bold tracking-tight">{stat.value}</span>
