@@ -116,14 +116,17 @@ export default async function ProjectDetailPage({ params }: Props) {
           </div>
 
           {/* Content */}
-          <div className="prose prose-invert prose-lg max-w-none mt-12
-            prose-headings:font-bold prose-headings:tracking-tight
-            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:gradient-text
-            prose-p:text-foreground-muted prose-p:leading-relaxed
-            prose-strong:text-foreground prose-strong:font-semibold
-            prose-a:text-accent-secondary prose-a:no-underline hover:prose-a:text-accent
-            prose-li:text-foreground-muted
-            prose-ul:text-foreground-muted
+          <div className="prose dark:prose-invert prose-lg max-w-none mt-12
+            prose-p:text-justify prose-p:text-foreground-muted prose-p:leading-relaxed prose-p:mb-6
+            prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
+            prose-h2:text-3xl prose-h2:mt-14 prose-h2:mb-6 prose-h2:gradient-text
+            prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:text-accent
+            prose-strong:text-foreground prose-strong:font-bold
+            prose-a:text-accent-secondary hover:prose-a:text-accent prose-a:transition-colors
+            prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-li:text-foreground-muted prose-li:marker:text-accent prose-li:mb-2 prose-li:text-justify
+            prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:marker:font-semibold
+            prose-hr:border-glass-border prose-hr:my-12
+            prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-foreground-muted
           ">
             {project.content ? (
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
