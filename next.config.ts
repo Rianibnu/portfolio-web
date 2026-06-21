@@ -11,18 +11,15 @@ const nextConfig: NextConfig = {
   },
   allowedDevOrigins: ["192.168.1.6"],
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "**",
       },
       {
-        protocol: "https",
-        hostname: "image.thum.io",
-      },
-      {
-        protocol: "https",
-        hostname: "api.microlink.io",
+        protocol: "http",
+        hostname: "**",
       },
     ],
   },
