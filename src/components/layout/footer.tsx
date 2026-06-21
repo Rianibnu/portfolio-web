@@ -107,7 +107,7 @@ export default function Footer() {
             &copy; {currentYear} RIR Studio. All rights reserved.
           </p>
           <div className="flex gap-4 justify-center md:justify-end">
-            <span className="text-xs text-foreground-subtle uppercase tracking-wider font-semibold">Dibuat dengan Next.js</span>
+            {/* <span className="text-xs text-foreground-subtle uppercase tracking-wider font-semibold">Dibuat dengan Next.js</span> */}
           </div>
         </div>
       </div>
