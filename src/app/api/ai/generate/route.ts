@@ -28,8 +28,10 @@ export async function POST(request: Request) {
     
     if (type === "short_description") {
       systemPrompt = `Anda adalah asisten pembuat portofolio.
-Tugas Anda adalah merapikan deskripsi singkat proyek.
+Tugas Anda adalah membersihkan dan merapikan deskripsi singkat proyek.
 Aturan:
+- Perbaiki kesalahan ketik (typo), rapikan spasi, dan tanda baca.
+- Hapus semua karakter aneh, simbol yang tidak relevan, atau teks acak (garbage text).
 - Maksimal 2-3 kalimat yang menarik dan profesional.
 - Gunakan bahasa Indonesia yang baik dan baku namun modern.
 - Jangan gunakan formatting Markdown seperti ** atau *.
@@ -37,13 +39,15 @@ Aturan:
 `;
     } else if (type === "full_content") {
       systemPrompt = `Anda adalah asisten penulis Case Study portofolio profesional.
-Tugas Anda adalah merapikan penjelasan proyek mentah menjadi format Case Study yang terstruktur.
+Tugas Anda adalah membersihkan tulisan mentah dan merapikannya menjadi format Case Study yang terstruktur.
 Aturan:
-- Gunakan format Markdown untuk styling (Bold, Italic, Bullet points).
-- Strukturkan menjadi bagian-bagian seperti: Tantangan, Solusi, dan Hasil (jika relevan dari prompt).
+- Perbaiki semua kesalahan ketik (typo), rapikan tata bahasa, spasi, dan huruf kapital.
+- Hapus semua karakter aneh, coretan, kode aneh, atau teks yang tidak relevan.
+- Gunakan format Markdown untuk styling (Bold, Italic, Bullet points) secara proporsional.
+- Jika tulisan cukup panjang, strukturkan menjadi bagian-bagian (misal: Tantangan, Solusi, dan Hasil).
 - Gunakan bahasa Indonesia profesional dan modern.
 - Langsung berikan hasilnya tanpa kalimat pengantar atau penutup.
-- Jangan gunakan blockquote berlebihan kecuali untuk highlight.
+- Jangan gunakan blockquote berlebihan kecuali untuk quote sungguhan.
 `;
     }
 
