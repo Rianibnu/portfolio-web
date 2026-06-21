@@ -11,6 +11,8 @@ interface AiTextAreaProps {
   className?: string;
   placeholder?: string;
   defaultValue?: string;
+  value?: string;
+  onChange?: (val: string) => void;
   type: "short_description" | "full_content";
   context?: "project" | "blog";
 }
@@ -23,18 +25,32 @@ export default function AiTextArea({
   className,
   placeholder,
   defaultValue = "",
+  value,
+  onChange,
   type,
   context = "project",
 }: AiTextAreaProps) {
-  const [text, setText] = useState(defaultValue);
+  const [internalText, setInternalText] = useState(defaultValue);
+
+  const isControlled = value !== undefined;
+  const currentText = isControlled ? value : internalText;
+
+  const handleChange = (newText: string) => {
+    if (!isControlled) {
+      setInternalText(newText);
+    }
+    if (onChange) {
+      onChange(newText);
+    }
+  };
 
   return (
     <div className="space-y-3">
       <AIAssistantButton
-        currentText={text}
+        currentText={currentText}
         type={type}
         context={context}
-        onGenerated={(newText) => setText(newText)}
+        onGenerated={(newText) => handleChange(newText)}
       />
       <textarea
         id={id}
@@ -43,8 +59,8 @@ export default function AiTextArea({
         rows={rows}
         className={className}
         placeholder={placeholder}
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={currentText}
+        onChange={(e) => handleChange(e.target.value)}
       />
     </div>
   );
