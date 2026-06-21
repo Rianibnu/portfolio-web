@@ -12,7 +12,7 @@ const socialLinks = [
   { href: "https://instagram.com/rianibnu_", icon: InstagramIcon, label: "Instagram" },
   { href: "https://instagram.com/rirstudio.id", icon: InstagramIcon, label: "RIR Studio" },
   { href: "mailto:rianibnurizall@gmail.com", icon: Mail, label: "Email" },
-  { href: "https://wa.me/6285156434782", icon: Phone, label: "WhatsApp" },
+  // { href: "https://wa.me/6285156434782", icon: Phone, label: "WhatsApp" },
 ];
 
 const quickLinks = [
