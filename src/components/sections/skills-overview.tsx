@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import SectionWrapper from "@/components/layout/section-wrapper";
 
 const webAndDatabase = [
-  "Laravel Framework", "Vue.JS", "PHP", "REST API", "PostgreSQL", "MySQL", "Data Analysis"
+  "Next.js", "React.js", "TypeScript", "Laravel Framework", "Vue.JS", "PHP", 
+  "Prisma ORM", "Supabase", "REST API", "PostgreSQL", "MySQL", "Data Analysis"
 ];
 
 const supportAndSystems = [
