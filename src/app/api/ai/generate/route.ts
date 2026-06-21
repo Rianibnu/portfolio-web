@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import fetch from "node-fetch";
+import https from "https";
 
 export async function POST(request: Request) {
   try {
@@ -47,7 +47,8 @@ Aturan:
 - Jangan gunakan blockquote berlebihan kecuali untuk quote sungguhan.`;
     }
 
-    const fullPrompt = `${systemPrompt}\n\nInput dari pengguna:\n${prompt}`;
+    // Paksa menggunakan IPv4 karena VPS IDCloudHost sering bermasalah dengan rute IPv6 Node.js
+    const agent = new https.Agent({ family: 4 });
 
     // Gunakan raw REST API call dengan node-fetch untuk mem-bypass SDK
     const response = await fetch(
@@ -60,6 +61,7 @@ Aturan:
         body: JSON.stringify({
           contents: [{ parts: [{ text: fullPrompt }] }],
         }),
+        agent: agent,
       }
     );
 
