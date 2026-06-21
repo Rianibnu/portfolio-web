@@ -79,15 +79,22 @@ export default async function EditPostPage({
             <label className="text-sm font-bold text-foreground" htmlFor="category">
               Category <span className="text-error">*</span>
             </label>
-            <input
-              type="text"
+            <select
               id="category"
               name="category"
               required
               defaultValue={post.category || "General"}
-              className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none"
-              placeholder="e.g., Web Development, Tutorial, Data Analyst"
-            />
+              className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none appearance-none cursor-pointer"
+            >
+              <option value="General">General</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Data Analyst">Data Analyst</option>
+              <option value="Mobile App">Mobile App</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Software Engineering">Software Engineering</option>
+              <option value="Tutorial">Tutorial</option>
+              <option value="Lifestyle">Lifestyle</option>
+            </select>
           </div>
 
           <div className="space-y-2">
