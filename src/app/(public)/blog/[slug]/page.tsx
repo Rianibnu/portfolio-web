@@ -6,6 +6,8 @@ import SectionWrapper from "@/components/layout/section-wrapper";
 import SkillBadge from "@/components/ui/skill-badge";
 import { formatDate, readingTime } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -101,36 +103,27 @@ export default async function BlogPostPage({ params }: Props) {
           )}
 
           {/* Content */}
-          <div className="prose prose-invert prose-lg max-w-none
-            prose-headings:font-bold prose-headings:tracking-tight
-            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:gradient-text
-            prose-p:text-foreground-muted prose-p:leading-relaxed
-            prose-strong:text-foreground prose-strong:font-semibold
-            prose-a:text-accent-secondary prose-a:no-underline hover:prose-a:text-accent
+          <div className="prose dark:prose-invert prose-lg max-w-none mt-8
+            prose-p:text-justify prose-p:text-foreground-muted prose-p:leading-relaxed prose-p:mb-6
+            prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
+            prose-h2:text-3xl prose-h2:mt-14 prose-h2:mb-6 prose-h2:gradient-text
+            prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:text-accent
+            prose-strong:text-foreground prose-strong:font-bold
+            prose-a:text-accent-secondary hover:prose-a:text-accent prose-a:transition-colors
+            prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-li:text-foreground-muted prose-li:marker:text-accent prose-li:mb-2 prose-li:text-justify
+            prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:marker:font-semibold
+            prose-hr:border-glass-border prose-hr:my-12
+            prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-foreground-muted
             prose-code:text-accent-secondary prose-code:bg-background-tertiary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
             prose-pre:bg-background-secondary prose-pre:border prose-pre:border-glass-border prose-pre:rounded-xl
-            prose-li:text-foreground-muted
-            prose-ul:text-foreground-muted
           ">
-            {/* Simple markdown-like rendering — will be replaced with MDX in Phase 2 */}
-            {post.content.split("\n").map((line, i) => {
-              if (line.startsWith("## ")) {
-                return <h2 key={i}>{line.replace("## ", "")}</h2>;
-              }
-              if (line.startsWith("- **")) {
-                const match = line.match(/- \*\*(.+?)\*\*(.+)/);
-                if (match) {
-                  return (
-                    <li key={i}>
-                      <strong>{match[1]}</strong>{match[2]}
-                    </li>
-                  );
-                }
-              }
-              if (line.startsWith("```")) return null;
-              if (line.trim() === "") return <br key={i} />;
-              return <p key={i}>{line}</p>;
-            })}
+            {post.content ? (
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {post.content}
+              </ReactMarkdown>
+            ) : (
+              <p>No content provided for this blog post yet.</p>
+            )}
           </div>
         </article>
       </SectionWrapper>
