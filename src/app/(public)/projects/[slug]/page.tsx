@@ -6,6 +6,8 @@ import { GithubIcon } from "@/components/ui/icons";
 import SectionWrapper from "@/components/layout/section-wrapper";
 import SkillBadge from "@/components/ui/skill-badge";
 import { prisma } from "@/lib/prisma";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -124,13 +126,9 @@ export default async function ProjectDetailPage({ params }: Props) {
             prose-ul:text-foreground-muted
           ">
             {project.content ? (
-              project.content.split("\n").map((line, i) => {
-                if (line.startsWith("## ")) {
-                  return <h2 key={i}>{line.replace("## ", "")}</h2>;
-                }
-                if (line.trim() === "") return <br key={i} />;
-                return <p key={i}>{line}</p>;
-              })
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {project.content}
+              </ReactMarkdown>
             ) : (
               <p>No detailed content provided for this project yet.</p>
             )}
