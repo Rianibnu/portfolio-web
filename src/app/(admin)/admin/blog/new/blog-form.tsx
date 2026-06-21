@@ -13,6 +13,7 @@ export default function BlogForm() {
   // Form states
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
+  const [category, setCategory] = useState("General");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
@@ -43,6 +44,7 @@ export default function BlogForm() {
       
       setTitle(result.title || "");
       setSlug(result.slug || "");
+      setCategory(result.category || "General");
       setExcerpt(result.excerpt || "");
       setContent(result.content || "");
       setTags(Array.isArray(result.tags) ? result.tags.join(", ") : "");
@@ -134,6 +136,22 @@ export default function BlogForm() {
                 placeholder="e.g., getting-started-with-nextjs"
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-foreground" htmlFor="category">
+              Category <span className="text-error">*</span>
+            </label>
+            <input
+              type="text"
+              id="category"
+              name="category"
+              required
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none"
+              placeholder="e.g., Web Development, Tutorial, Data Analyst"
+            />
           </div>
 
           <div className="space-y-2">

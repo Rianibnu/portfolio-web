@@ -76,6 +76,21 @@ export default async function EditPostPage({
           </div>
 
           <div className="space-y-2">
+            <label className="text-sm font-bold text-foreground" htmlFor="category">
+              Category <span className="text-error">*</span>
+            </label>
+            <input
+              type="text"
+              id="category"
+              name="category"
+              required
+              defaultValue={post.category || "General"}
+              className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none"
+              placeholder="e.g., Web Development, Tutorial, Data Analyst"
+            />
+          </div>
+
+          <div className="space-y-2">
             <label className="text-sm font-bold text-foreground" htmlFor="excerpt">
               Excerpt / Short Summary
             </label>

@@ -42,6 +42,7 @@ model Post {
   excerpt     String?
   content     String    @db.Text
   thumbnail   String?
+  category    String    @default("General")
   tags        String[]
   published   Boolean   @default(false)
   views       Int       @default(0)

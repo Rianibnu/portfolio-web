@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SectionWrapper from "@/components/layout/section-wrapper";
 import BlogCard from "@/components/ui/blog-card";
+import BlogFilter from "@/components/sections/blog-filter";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -11,11 +12,32 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function BlogPage() {
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
+
+  const whereCondition: any = { published: true };
+  if (category) {
+    whereCondition.category = category;
+  }
+
   const posts = await prisma.post.findMany({
-    where: { published: true },
+    where: whereCondition,
     orderBy: { publishedAt: "desc" },
   });
+
+  // Ambil daftar kategori unik dari semua post yang sudah di-publish
+  const allPublishedPosts = await prisma.post.findMany({
+    where: { published: true },
+    select: { category: true },
+  });
+
+  const categories = Array.from(
+    new Set(allPublishedPosts.map((post) => post.category).filter(Boolean))
+  ).sort();
 
   return (
     <SectionWrapper className="pt-32 md:pt-40">
@@ -28,6 +50,8 @@ export default async function BlogPage() {
             Pemikiran, tutorial, dan wawasan seputar pengembangan web, desain, dan pembuatan produk.
           </p>
         </div>
+
+        {categories.length > 0 && <BlogFilter categories={categories} />}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {posts.length === 0 ? (

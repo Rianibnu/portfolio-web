@@ -30,6 +30,7 @@ Aturan output:
 - Gunakan bahasa Indonesia profesional dan modern.
 - \`title\`: Judul artikel menarik (string).
 - \`slug\`: URL slug yang bersih dan SEO friendly, contoh "judul-artikel-menarik" (string).
+- \`category\`: Kategori umum artikel, contoh "Web Development", "Data Analyst", "Tutorial", "Lifestyle" (string).
 - \`excerpt\`: Ringkasan pendek (2-3 kalimat) yang menggugah selera pembaca (string).
 - \`content\`: Isi artikel lengkap yang terstruktur dengan format Markdown (menggunakan ##, ###, list, bold, italic). (string)
 - \`tags\`: Tag artikel yang relevan (array of strings, contoh: ["Tutorial", "Next.js"]).

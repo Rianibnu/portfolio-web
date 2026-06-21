@@ -27,6 +27,7 @@ async function uploadFile(file: File): Promise<string> {
 export async function createPost(formData: FormData) {
   const title = formData.get("title") as string;
   const slug = formData.get("slug") as string;
+  const category = formData.get("category") as string || "General";
   const excerpt = formData.get("excerpt") as string;
   const content = formData.get("content") as string;
   let finalThumbnail = formData.get("thumbnail") as string;
@@ -53,6 +54,7 @@ export async function createPost(formData: FormData) {
       slug,
       excerpt: excerpt || null,
       content,
+      category,
       thumbnail: finalThumbnail || null,
       tags,
       published,
@@ -69,6 +71,7 @@ export async function createPost(formData: FormData) {
 export async function updatePost(id: string, formData: FormData) {
   const title = formData.get("title") as string;
   const slug = formData.get("slug") as string;
+  const category = formData.get("category") as string || "General";
   const excerpt = formData.get("excerpt") as string;
   const content = formData.get("content") as string;
   let finalThumbnail = formData.get("thumbnail") as string;
@@ -95,6 +98,7 @@ export async function updatePost(id: string, formData: FormData) {
       slug,
       excerpt: excerpt || null,
       content,
+      category,
       thumbnail: finalThumbnail || null,
       tags,
       published,
