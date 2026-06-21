@@ -21,9 +21,44 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Post Not Found" };
   }
 
+  // Clean description for SEO: remove markdown characters and trim
+  const rawDescription = post.excerpt || post.content.slice(0, 160);
+  const cleanDescription = rawDescription.replace(/[#*`>]/g, "").trim() + "...";
+  
+  // Base URL (Make sure to set NEXT_PUBLIC_APP_URL in your .env, e.g., https://yourdomain.com)
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.com";
+  const postUrl = `${baseUrl}/blog/${post.slug}`;
+
   return {
     title: post.title,
-    description: post.excerpt || post.content.slice(0, 160),
+    description: cleanDescription,
+    keywords: post.tags, // Next.js accepts an array of strings for keywords
+    authors: [{ name: "Rian Ibnu", url: baseUrl }],
+    openGraph: {
+      title: post.title,
+      description: cleanDescription,
+      url: postUrl,
+      type: "article",
+      publishedTime: post.publishedAt.toISOString(),
+      authors: ["Rian Ibnu"],
+      images: post.thumbnail ? [
+        {
+          url: post.thumbnail.startsWith('http') ? post.thumbnail : `${baseUrl}${post.thumbnail}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }
+      ] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: cleanDescription,
+      images: post.thumbnail ? [post.thumbnail.startsWith('http') ? post.thumbnail : `${baseUrl}${post.thumbnail}`] : [],
+    },
+    alternates: {
+      canonical: postUrl,
+    }
   };
 }
 
