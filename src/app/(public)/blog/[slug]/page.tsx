@@ -51,81 +51,140 @@ export default async function BlogPostPage({ params }: Props) {
     );
   }
 
+  // Fetch recommended posts
+  const recentPosts = await prisma.post.findMany({
+    where: { published: true, id: { not: post.id } },
+    orderBy: { publishedAt: "desc" },
+    take: 3,
+  });
+
   return (
     <div className="pt-24">
       <SectionWrapper className="py-12 md:py-16">
-        <article className="container-custom max-w-3xl">
-          {/* Back Link */}
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-foreground-muted hover:text-accent-secondary transition-colors mb-8"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Blog
-          </Link>
+        <div className="container-custom grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          {/* Main Content Area */}
+          <article className="lg:col-span-8 w-full max-w-3xl">
+            {/* Back Link */}
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-sm text-foreground-muted hover:text-accent-secondary transition-colors mb-8"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Blog
+            </Link>
 
-          {/* Meta */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-foreground-subtle mb-4">
-            <span className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4" />
-              {formatDate(post.publishedAt)}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4" />
-              {readingTime(post.content)}
-            </span>
-          </div>
-
-          {/* Title */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6">
-            {post.title}
-          </h1>
-
-          {/* Tags */}
-          <div className="flex flex-wrap items-center gap-2 mb-8">
-            <Tag className="w-4 h-4 text-foreground-subtle" />
-            {post.tags.map((tag) => (
-              <SkillBadge key={tag} name={tag} variant="outline" />
-            ))}
-          </div>
-
-          {/* Thumbnail */}
-          {post.thumbnail && (
-            <div className="relative aspect-2/1 md:aspect-21/9 w-full rounded-3xl overflow-hidden mb-12 glass border-white/10 group">
-              <Image
-                src={post.thumbnail}
-                alt={post.title}
-                fill
-                className="object-cover"
-                priority
-              />
+            {/* Meta */}
+            <div className="flex flex-wrap items-center gap-4 text-sm text-foreground-subtle mb-4">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="w-4 h-4" />
+                {formatDate(post.publishedAt)}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-4 h-4" />
+                {readingTime(post.content)}
+              </span>
             </div>
-          )}
 
-          {/* Content */}
-          <div className="prose dark:prose-invert prose-lg max-w-none mt-8
-            prose-p:text-justify prose-p:text-foreground-muted prose-p:leading-relaxed prose-p:mb-6
-            prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
-            prose-h2:text-3xl prose-h2:mt-14 prose-h2:mb-6 prose-h2:gradient-text
-            prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:text-accent
-            prose-strong:text-foreground prose-strong:font-bold
-            prose-a:text-accent-secondary hover:prose-a:text-accent prose-a:transition-colors
-            prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-li:text-foreground-muted prose-li:marker:text-accent prose-li:mb-2 prose-li:text-justify
-            prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:marker:font-semibold
-            prose-hr:border-glass-border prose-hr:my-12
-            prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-foreground-muted
-            prose-code:text-accent-secondary prose-code:bg-background-tertiary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-            prose-pre:bg-background-secondary prose-pre:border prose-pre:border-glass-border prose-pre:rounded-xl
-          ">
-            {post.content ? (
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {post.content}
-              </ReactMarkdown>
-            ) : (
-              <p>No content provided for this blog post yet.</p>
+            {/* Title */}
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-[1.15]">
+              {post.title}
+            </h1>
+
+            {/* Tags */}
+            <div className="flex flex-wrap items-center gap-2 mb-8">
+              <Tag className="w-4 h-4 text-foreground-subtle" />
+              {post.tags.map((tag) => (
+                <SkillBadge key={tag} name={tag} variant="outline" />
+              ))}
+            </div>
+
+            {/* Thumbnail */}
+            {post.thumbnail && (
+              <div className="relative aspect-video w-full rounded-3xl overflow-hidden mb-12 glass border-white/10 group">
+                <Image
+                  src={post.thumbnail}
+                  alt={post.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
             )}
-          </div>
-        </article>
+
+            {/* Content */}
+            <div className="prose dark:prose-invert prose-lg max-w-none mt-8
+              prose-p:text-justify prose-p:text-foreground-muted prose-p:leading-relaxed prose-p:mb-6
+              prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
+              prose-h2:text-3xl prose-h2:mt-14 prose-h2:mb-6 prose-h2:gradient-text
+              prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:text-accent
+              prose-strong:text-foreground prose-strong:font-bold
+              prose-a:text-accent-secondary hover:prose-a:text-accent prose-a:transition-colors
+              prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-li:text-foreground-muted prose-li:marker:text-accent prose-li:mb-2 prose-li:text-justify
+              prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:marker:font-semibold
+              prose-hr:border-glass-border prose-hr:my-12
+              prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-foreground-muted
+              prose-code:text-accent-secondary prose-code:bg-background-tertiary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+              prose-pre:bg-background-secondary prose-pre:border prose-pre:border-glass-border prose-pre:rounded-xl
+            ">
+              {post.content ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {post.content}
+                </ReactMarkdown>
+              ) : (
+                <p>No content provided for this blog post yet.</p>
+              )}
+            </div>
+          </article>
+
+          {/* Right Sidebar */}
+          <aside className="lg:col-span-4 mt-16 lg:mt-0 pt-2 lg:pt-24 border-t lg:border-t-0 border-glass-border">
+            <div className="sticky top-32 space-y-12">
+              
+              {/* Recommended Reading */}
+              {recentPosts.length > 0 && (
+                <div>
+                  <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-accent" />
+                    Rekomendasi Bacaan
+                  </h3>
+                  <div className="flex flex-col gap-6">
+                    {recentPosts.map((relatedPost) => (
+                      <Link key={relatedPost.id} href={`/blog/${relatedPost.slug}`} className="group flex gap-4 items-start">
+                        {relatedPost.thumbnail && (
+                          <div className="relative w-24 h-20 rounded-xl overflow-hidden shrink-0 border border-glass-border">
+                            <Image src={relatedPost.thumbnail} alt={relatedPost.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                          </div>
+                        )}
+                        <div className="flex-1">
+                          <h4 className="font-bold text-sm leading-tight mb-2 group-hover:text-accent transition-colors line-clamp-2">
+                            {relatedPost.title}
+                          </h4>
+                          <div className="flex items-center gap-2 text-xs text-foreground-subtle">
+                            <Calendar className="w-3 h-3" />
+                            <span>{formatDate(relatedPost.publishedAt)}</span>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Author Box */}
+              <div className="p-6 rounded-2xl bg-background-secondary border border-glass-border">
+                <h3 className="font-bold text-lg mb-3">Tentang Penulis</h3>
+                <p className="text-sm text-foreground-muted leading-relaxed font-light mb-5">
+                  Saya selalu tertarik mendiskusikan web development, UI/UX, dan inovasi teknologi terbaru. Jika Anda menemukan tulisan ini bermanfaat, mari berkolaborasi!
+                </p>
+                <Link href="/contact" className="inline-flex items-center gap-2 text-sm font-semibold bg-foreground text-background px-4 py-2 rounded-lg hover:scale-105 transition-all">
+                  Mulai Diskusi &rarr;
+                </Link>
+              </div>
+
+            </div>
+          </aside>
+
+        </div>
       </SectionWrapper>
     </div>
   );
