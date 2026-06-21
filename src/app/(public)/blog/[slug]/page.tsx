@@ -8,6 +8,10 @@ import { formatDate, readingTime } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import ShareButtons from "@/components/ui/share-buttons";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -101,6 +105,21 @@ export default async function BlogPostPage({ params }: Props) {
     take: 3,
   });
 
+  // Extract headings for Table of Contents
+  const headings = post.content
+    ? Array.from(post.content.matchAll(/^(##|###)\s+(.*)$/gm)).map((match) => {
+        // github-slugger simple approximation
+        const id = match[2].toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+        return {
+          level: match[1].length,
+          text: match[2],
+          id,
+        };
+      })
+    : [];
+
+  const postUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.com"}/blog/${post.slug}`;
+
   return (
     <div className="pt-24">
       <SectionWrapper className="py-12 md:py-16">
@@ -167,15 +186,45 @@ export default async function BlogPostPage({ params }: Props) {
               prose-hr:border-glass-border prose-hr:my-12
               prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-foreground-muted
               prose-code:text-accent-secondary prose-code:bg-background-tertiary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-              prose-pre:bg-background-secondary prose-pre:border prose-pre:border-glass-border prose-pre:rounded-xl
+              prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0
             ">
               {post.content ? (
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown 
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeSlug]}
+                  components={{
+                    code({node, inline, className, children, ...props}: any) {
+                      const match = /language-(\w+)/.exec(className || '')
+                      return !inline && match ? (
+                        <div className="my-8 rounded-xl overflow-hidden border border-glass-border">
+                          <SyntaxHighlighter
+                            {...props}
+                            style={vscDarkPlus as any}
+                            language={match[1]}
+                            PreTag="div"
+                            customStyle={{ margin: 0, padding: '1.5rem', fontSize: '0.875rem' }}
+                          >
+                            {String(children).replace(/\n$/, '')}
+                          </SyntaxHighlighter>
+                        </div>
+                      ) : (
+                        <code {...props} className={className}>
+                          {children}
+                        </code>
+                      )
+                    }
+                  }}
+                >
                   {post.content}
                 </ReactMarkdown>
               ) : (
                 <p>No content provided for this blog post yet.</p>
               )}
+            </div>
+
+            {/* Bottom Share Buttons */}
+            <div className="mt-16 pt-8 border-t border-glass-border">
+              <ShareButtons url={postUrl} title={post.title} />
             </div>
           </article>
 
@@ -183,6 +232,28 @@ export default async function BlogPostPage({ params }: Props) {
           <aside className="lg:col-span-4 mt-16 lg:mt-0 pt-2 lg:pt-24 border-t lg:border-t-0 border-glass-border">
             <div className="sticky top-32 space-y-12">
               
+              {/* Table of Contents */}
+              {headings.length > 0 && (
+                <div className="hidden lg:block bg-background-secondary border border-glass-border rounded-2xl p-6">
+                  <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                    Daftar Isi
+                  </h3>
+                  <nav className="flex flex-col gap-2">
+                    {headings.map((heading, i) => (
+                      <a
+                        key={i}
+                        href={`#${heading.id}`}
+                        className={`text-sm text-foreground-muted hover:text-accent transition-colors line-clamp-1 ${
+                          heading.level === 3 ? "ml-4" : ""
+                        }`}
+                      >
+                        {heading.text}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              )}
+
               {/* Recommended Reading */}
               {recentPosts.length > 0 && (
                 <div>
