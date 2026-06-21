@@ -39,10 +39,10 @@ export default function Footer() {
 
       <div className="container-custom relative py-16 md:py-24">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
-          
+
           {/* Brand & Description */}
           <div className="md:col-span-5 space-y-8 flex flex-col items-center text-center md:items-start md:text-left">
-            <Link href="/" className="inline-block relative w-48 h-16 md:w-56 md:h-20 transition-transform hover:scale-105 duration-300">
+            <Link href="/" className="inline-block relative w-64 h-24 md:w-80 md:h-28 transition-transform hover:scale-105 duration-300 -ml-2">
               <Image
                 src="/images/logo-light-transparent.png"
                 alt="RIR Studio Logo"
@@ -58,7 +58,7 @@ export default function Footer() {
                 className="object-contain opacity-90 hidden dark:block"
               />
             </Link>
-            
+
             <p className="text-base text-foreground-muted leading-relaxed font-light max-w-sm">
               Full Stack Web Developer & IT Support. Ahli membangun solusi digital yang efisien, modern, dan scalable.
             </p>
@@ -120,7 +120,7 @@ export default function Footer() {
             &copy; {currentYear} RIR Studio. All rights reserved.
           </p>
           <div className="flex gap-4 items-center text-sm text-foreground-subtle font-medium">
-            <span>Jakarta, Indonesia</span>
+            <span>Bandung, Indonesia</span>
           </div>
         </div>
       </div>
