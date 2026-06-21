@@ -45,8 +45,8 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-background-secondary/95 backdrop-blur-xl border-b border-glass-border shadow-sm py-4"
-          : "bg-background-secondary/80 backdrop-blur-lg border-b border-glass-border/50 py-5"
+          ? "bg-background-secondary/95 backdrop-blur-xl border-b border-glass-border shadow-md py-4"
+          : "bg-background-secondary border-b border-glass-border shadow-sm py-5"
       )}
     >
       <nav className="container-custom flex items-center justify-between">
