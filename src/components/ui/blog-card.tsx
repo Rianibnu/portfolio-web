@@ -16,6 +16,7 @@ interface BlogCardProps {
   publishedAt: string;
   content?: string;
   index?: number;
+  disableAnimation?: boolean;
 }
 
 export default function BlogCard({
@@ -27,15 +28,10 @@ export default function BlogCard({
   publishedAt,
   content,
   index = 0,
+  disableAnimation = false,
 }: BlogCardProps) {
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative flex flex-col rounded-2xl bg-background-secondary border border-glass-border overflow-hidden transition-all duration-500 hover:border-white/20 h-full"
-    >
+  const CardContent = (
+    <>
       {/* Thumbnail */}
       {thumbnail && (
         <Link href={`/blog/${slug}`} className="block relative overflow-hidden aspect-video">
@@ -84,6 +80,26 @@ export default function BlogCard({
           </div>
         )}
       </div>
+    </>
+  );
+
+  if (disableAnimation) {
+    return (
+      <article className="group relative flex flex-col rounded-2xl bg-background-secondary border border-glass-border overflow-hidden transition-all duration-500 hover:border-white/20 h-full">
+        {CardContent}
+      </article>
+    );
+  }
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative flex flex-col rounded-2xl bg-background-secondary border border-glass-border overflow-hidden transition-all duration-500 hover:border-white/20 h-full"
+    >
+      {CardContent}
     </motion.article>
   );
 }
