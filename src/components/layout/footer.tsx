@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Mail, Code2, Phone } from "lucide-react";
-import { GithubIcon, LinkedinIcon, TwitterIcon, InstagramIcon } from "@/components/ui/icons";
+import { Mail, ArrowRight } from "lucide-react";
+import { GithubIcon, LinkedinIcon, InstagramIcon } from "@/components/ui/icons";
 
 const socialLinks = [
   { href: "https://github.com/rianibnu", icon: GithubIcon, label: "GitHub" },
@@ -12,14 +12,13 @@ const socialLinks = [
   { href: "https://instagram.com/rianibnu_", icon: InstagramIcon, label: "Instagram" },
   { href: "https://instagram.com/rirstudio.id", icon: InstagramIcon, label: "RIR Studio" },
   { href: "mailto:rianibnurizall@gmail.com", icon: Mail, label: "Email" },
-  // { href: "https://wa.me/6285156434782", icon: Phone, label: "WhatsApp" },
 ];
 
 const quickLinks = [
-  { href: "/about", label: "Tentang" },
-  { href: "/projects", label: "Proyek" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Kontak" },
+  { href: "/about", label: "Tentang Saya" },
+  { href: "/projects", label: "Portfolio Proyek" },
+  { href: "/blog", label: "Artikel Blog" },
+  { href: "/contact", label: "Hubungi Saya" },
 ];
 
 export default function Footer() {
@@ -31,83 +30,97 @@ export default function Footer() {
   }
 
   return (
-    <footer className="relative border-t border-glass-border bg-background">
-      <div className="container-custom py-12 md:py-20">
-        <div className="flex flex-col md:flex-row justify-between gap-12 md:gap-8">
-          {/* Brand */}
-          <div className="space-y-6 md:max-w-sm">
-            <Link href="/" className="flex items-center gap-2 group relative w-56 h-20 md:w-64 md:h-24">
+    <footer className="relative bg-background overflow-hidden border-t border-glass-border">
+      {/* Decorative top glow line */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+
+      {/* Decorative background blur */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="container-custom relative py-16 md:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+          
+          {/* Brand & Description */}
+          <div className="md:col-span-5 space-y-8 flex flex-col items-center text-center md:items-start md:text-left">
+            <Link href="/" className="inline-block relative w-48 h-16 md:w-56 md:h-20 transition-transform hover:scale-105 duration-300">
               <Image
                 src="/images/logo-light-transparent.png"
                 alt="RIR Studio Logo"
                 fill
-                sizes="(max-width: 768px) 224px, 256px"
-                className="object-contain opacity-90 group-hover:opacity-100 transition-all duration-300 dark:hidden"
+                sizes="(max-width: 768px) 192px, 224px"
+                className="object-contain opacity-90 dark:hidden"
               />
               <Image
                 src="/images/logo-dark-transparent.png"
                 alt="RIR Studio Logo"
                 fill
-                sizes="(max-width: 768px) 224px, 256px"
-                className="object-contain opacity-90 group-hover:opacity-100 transition-all duration-300 hidden dark:block"
+                sizes="(max-width: 768px) 192px, 224px"
+                className="object-contain opacity-90 hidden dark:block"
               />
             </Link>
-            <p className="text-sm text-foreground-muted leading-relaxed font-light">
-              Full Stack Web Developer & IT Support. Ahli membangun solusi digital efisien
-              menggunakan Technology Modern.
+            
+            <p className="text-base text-foreground-muted leading-relaxed font-light max-w-sm">
+              Full Stack Web Developer & IT Support. Ahli membangun solusi digital yang efisien, modern, dan scalable.
             </p>
+
+            <Link href="/contact" className="inline-flex items-center gap-2 text-sm font-bold text-foreground hover:text-accent transition-colors group px-6 py-3 rounded-full bg-background-secondary border border-glass-border hover:border-accent/50">
+              Mari berkolaborasi
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-12 md:gap-24">
-            {/* Quick Links */}
-            <div className="space-y-6">
-              <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">
-                Navigasi
-              </h3>
-              <ul className="space-y-3">
-                {quickLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm font-medium text-foreground-muted hover:text-foreground transition-colors duration-200"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Social */}
-            <div className="space-y-6">
-              <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">
-                Terhubung
-              </h3>
-              <div className="flex flex-wrap items-center gap-3">
-                {socialLinks.map((link) => (
-                  <a
-                    key={link.label}
+          {/* Quick Links */}
+          <div className="md:col-span-3 md:col-start-7 space-y-6 text-center md:text-left">
+            <h3 className="text-sm font-bold text-foreground uppercase tracking-widest relative inline-block">
+              Navigasi
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-0 w-1/2 h-[2px] bg-accent rounded-full" />
+            </h3>
+            <ul className="space-y-4 pt-2">
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
                     href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-full border border-glass-border bg-background-secondary text-foreground-muted hover:text-foreground hover:border-foreground transition-all duration-300 hover:-translate-y-1"
-                    aria-label={link.label}
+                    className="text-foreground-muted hover:text-foreground transition-all duration-300 font-medium text-sm inline-flex relative group"
                   >
-                    <link.icon className="w-4 h-4" />
-                  </a>
-                ))}
-              </div>
+                    {link.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-foreground transition-all duration-300 group-hover:w-full" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Social */}
+          <div className="md:col-span-3 space-y-6 text-center md:text-left">
+            <h3 className="text-sm font-bold text-foreground uppercase tracking-widest relative inline-block">
+              Terhubung
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-0 w-1/2 h-[2px] bg-accent rounded-full" />
+            </h3>
+            <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative p-3.5 rounded-xl border border-glass-border bg-background-secondary/50 text-foreground-muted hover:text-foreground hover:border-accent/50 hover:bg-background-secondary transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(var(--accent),0.2)]"
+                  aria-label={link.label}
+                >
+                  <link.icon className="w-5 h-5 relative z-10" />
+                </a>
+              ))}
             </div>
           </div>
+
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-glass-border flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <p className="text-sm text-foreground-subtle font-medium">
+        <div className="mt-20 pt-8 border-t border-glass-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-foreground-subtle font-medium text-center md:text-left">
             &copy; {currentYear} RIR Studio. All rights reserved.
           </p>
-          <div className="flex gap-4 justify-center md:justify-end">
-            {/* <span className="text-xs text-foreground-subtle uppercase tracking-wider font-semibold">Dibuat dengan Next.js</span> */}
+          <div className="flex gap-4 items-center text-sm text-foreground-subtle font-medium">
+            <span>Jakarta, Indonesia</span>
           </div>
         </div>
       </div>
