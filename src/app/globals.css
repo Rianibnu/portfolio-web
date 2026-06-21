@@ -324,7 +324,7 @@ a {
 /* --- Marquee Animation --- */
 @keyframes marquee {
   0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-50% - 1rem)); } /* Adjust based on gap */
+  100% { transform: translateX(-100%); }
 }
 
 .animate-marquee {
