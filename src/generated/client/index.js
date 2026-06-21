@@ -197,6 +197,10 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -204,7 +208,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -223,8 +227,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  email     String   @unique\n  name      String?\n  password  String\n  role      String   @default(\"ADMIN\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Project {\n  id          String   @id @default(cuid())\n  title       String\n  slug        String   @unique\n  description String\n  content     String?  @db.Text\n  coverImage  String\n  gallery     String[]\n  techStack   String[]\n  githubUrl   String?\n  demoUrl     String?\n  featured    Boolean  @default(false)\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n}\n\nmodel Post {\n  id          String   @id @default(cuid())\n  title       String\n  slug        String   @unique\n  excerpt     String?\n  content     String   @db.Text\n  thumbnail   String?\n  tags        String[]\n  published   Boolean  @default(false)\n  publishedAt DateTime @default(now())\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n}\n\nmodel Media {\n  id        String   @id @default(cuid())\n  filename  String\n  url       String\n  type      String\n  size      Int\n  createdAt DateTime @default(now())\n}\n\nmodel Contact {\n  id        String   @id @default(cuid())\n  name      String\n  email     String\n  message   String   @db.Text\n  read      Boolean  @default(false)\n  createdAt DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "213306b70eb5e75ce3fee8449be9487adc30fad5fd7c61e4bb068275c78cc00a",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/client\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  email     String   @unique\n  name      String?\n  password  String\n  role      String   @default(\"ADMIN\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Project {\n  id          String   @id @default(cuid())\n  title       String\n  slug        String   @unique\n  description String\n  content     String?  @db.Text\n  coverImage  String\n  gallery     String[]\n  techStack   String[]\n  githubUrl   String?\n  demoUrl     String?\n  featured    Boolean  @default(false)\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n}\n\nmodel Post {\n  id          String   @id @default(cuid())\n  title       String\n  slug        String   @unique\n  excerpt     String?\n  content     String   @db.Text\n  thumbnail   String?\n  tags        String[]\n  published   Boolean  @default(false)\n  publishedAt DateTime @default(now())\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n}\n\nmodel Media {\n  id        String   @id @default(cuid())\n  filename  String\n  url       String\n  type      String\n  size      Int\n  createdAt DateTime @default(now())\n}\n\nmodel Contact {\n  id        String   @id @default(cuid())\n  name      String\n  email     String\n  message   String   @db.Text\n  read      Boolean  @default(false)\n  createdAt DateTime @default(now())\n}\n",
+  "inlineSchemaHash": "594bbfffae6212645e04b503aa18eb21fe2717891b996ffaf9dc2616c7d557fc",
   "copyEngine": true
 }
 
@@ -265,6 +269,10 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
 path.join(process.cwd(), "src/generated/client/query_engine-windows.dll.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "src/generated/client/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/generated/client/schema.prisma")
