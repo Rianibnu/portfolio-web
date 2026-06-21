@@ -83,7 +83,7 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   className={cn(
-                    "relative px-4 py-2 text-sm font-semibold tracking-wide transition-colors duration-200",
+                    "relative px-4 py-2 text-base font-semibold tracking-wide transition-colors duration-200",
                     isActive
                       ? "text-foreground"
                       : "text-foreground-muted hover:text-foreground"
@@ -112,7 +112,7 @@ export default function Navbar() {
           <ThemeToggle />
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-bold rounded-full bg-foreground text-background hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-6 py-2.5 text-base font-bold rounded-full bg-foreground text-background hover:scale-105 transition-all duration-300"
           >
             Mari Berdiskusi
           </Link>
