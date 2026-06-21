@@ -54,7 +54,7 @@ Aturan:
 
     // Gunakan raw REST API call dengan node-fetch untuk mem-bypass SDK
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
