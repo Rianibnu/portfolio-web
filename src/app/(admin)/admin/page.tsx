@@ -1,5 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { FolderGit2, FileText, MessageSquare, Eye } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard | Admin Panel",
+};
 
 export const dynamic = "force-dynamic";
 

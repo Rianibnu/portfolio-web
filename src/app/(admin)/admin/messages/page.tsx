@@ -1,6 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { Mail, MailOpen, Trash2 } from "lucide-react";
 import { markAsRead, markAsUnread, deleteMessage } from "./actions";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Messages | Admin Panel",
+};
 
 export const dynamic = "force-dynamic";
 

@@ -2,6 +2,11 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, ExternalLink } from "lucide-react";
 import { deleteProject } from "./actions";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects | Admin Panel",
+};
 
 export const dynamic = "force-dynamic";
 

@@ -1,9 +1,27 @@
-import { createPost } from "../actions";
+import { updatePost } from "../../actions";
 import Link from "next/link";
 import { ArrowLeft, Save } from "lucide-react";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
 import AiTextArea from "@/components/admin/ai-textarea";
 
-export default function NewPostPage() {
+export default async function EditPostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  
+  const post = await prisma.post.findUnique({
+    where: { id },
+  });
+
+  if (!post) {
+    notFound();
+  }
+
+  const updateAction = updatePost.bind(null, post.id);
+
   return (
     <div className="space-y-8 animate-fade-in-up max-w-4xl mx-auto">
       <div className="flex items-center gap-4">
@@ -15,15 +33,15 @@ export default function NewPostPage() {
         </Link>
         <div>
           <h1 className="text-3xl font-extrabold tracking-tighter mb-1">
-            New Blog Post
+            Edit Post
           </h1>
           <p className="text-foreground-muted">
-            Write a new article to publish on your blog.
+            Update your blog article.
           </p>
         </div>
       </div>
 
-      <form action={createPost} className="space-y-6">
+      <form action={updateAction} className="space-y-6">
         <div className="bg-background border border-glass-border rounded-2xl p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
@@ -35,6 +53,7 @@ export default function NewPostPage() {
                 id="title"
                 name="title"
                 required
+                defaultValue={post.title}
                 className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none"
                 placeholder="e.g., Getting Started with Next.js"
               />
@@ -49,6 +68,7 @@ export default function NewPostPage() {
                 id="slug"
                 name="slug"
                 required
+                defaultValue={post.slug}
                 className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none"
                 placeholder="e.g., getting-started-with-nextjs"
               />
@@ -63,6 +83,7 @@ export default function NewPostPage() {
               id="excerpt"
               name="excerpt"
               rows={2}
+              defaultValue={post.excerpt || ""}
               className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none resize-none"
               placeholder="Brief summary of this blog post..."
               type="short_description"
@@ -78,6 +99,7 @@ export default function NewPostPage() {
               name="content"
               required
               rows={12}
+              defaultValue={post.content}
               className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none font-mono text-sm"
               placeholder={"Write your article content here...\n\n## Section Heading\n\nYour paragraph text goes here."}
               type="full_content"
@@ -92,6 +114,7 @@ export default function NewPostPage() {
               type="text"
               id="tags"
               name="tags"
+              defaultValue={post.tags.join(", ")}
               className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none"
               placeholder="Next.js, React, Tutorial"
             />
@@ -104,7 +127,7 @@ export default function NewPostPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-xs text-foreground-subtle" htmlFor="thumbnailFile">
-                  Option 1: Upload File
+                  Option 1: Upload New File
                 </label>
                 <input
                   type="file"
@@ -122,13 +145,14 @@ export default function NewPostPage() {
                   type="url"
                   id="thumbnail"
                   name="thumbnail"
+                  defaultValue={post.thumbnail || ""}
                   className="w-full px-4 py-2.5 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none"
                   placeholder="https://images.unsplash.com/..."
                 />
               </div>
             </div>
             <p className="text-xs text-foreground-muted">
-              <strong>Tip:</strong> You can upload an image or provide a direct URL. If left blank, a default placeholder will be used.
+              <strong>Tip:</strong> You can upload a new image, update the URL, or leave both to keep the current thumbnail.
             </p>
           </div>
 
@@ -137,10 +161,11 @@ export default function NewPostPage() {
               type="checkbox"
               id="published"
               name="published"
+              defaultChecked={post.published}
               className="w-5 h-5 rounded border-glass-border text-foreground focus:ring-foreground"
             />
             <label className="text-sm font-bold text-foreground" htmlFor="published">
-              Publish Immediately
+              Published
             </label>
           </div>
         </div>
@@ -151,7 +176,7 @@ export default function NewPostPage() {
             className="inline-flex items-center gap-2 bg-foreground text-background px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform"
           >
             <Save className="w-5 h-5" />
-            Save Post
+            Update Post
           </button>
         </div>
       </form>
