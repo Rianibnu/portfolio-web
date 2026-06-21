@@ -33,6 +33,14 @@ export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = await prisma.post.findUnique({ where: { slug } });
 
+  if (post) {
+    // Increment view count asynchronously
+    prisma.post.update({
+      where: { id: post.id },
+      data: { views: { increment: 1 } }
+    }).catch(console.error); // Catch any errors so it doesn't crash the page
+  }
+
   if (!post) {
     return (
       <div className="pt-32 pb-20 text-center container-custom">

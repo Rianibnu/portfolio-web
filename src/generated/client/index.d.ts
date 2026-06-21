@@ -3343,8 +3343,18 @@ export namespace Prisma {
 
   export type AggregatePost = {
     _count: PostCountAggregateOutputType | null
+    _avg: PostAvgAggregateOutputType | null
+    _sum: PostSumAggregateOutputType | null
     _min: PostMinAggregateOutputType | null
     _max: PostMaxAggregateOutputType | null
+  }
+
+  export type PostAvgAggregateOutputType = {
+    views: number | null
+  }
+
+  export type PostSumAggregateOutputType = {
+    views: number | null
   }
 
   export type PostMinAggregateOutputType = {
@@ -3355,6 +3365,7 @@ export namespace Prisma {
     content: string | null
     thumbnail: string | null
     published: boolean | null
+    views: number | null
     publishedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3368,6 +3379,7 @@ export namespace Prisma {
     content: string | null
     thumbnail: string | null
     published: boolean | null
+    views: number | null
     publishedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3382,12 +3394,21 @@ export namespace Prisma {
     thumbnail: number
     tags: number
     published: number
+    views: number
     publishedAt: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type PostAvgAggregateInputType = {
+    views?: true
+  }
+
+  export type PostSumAggregateInputType = {
+    views?: true
+  }
 
   export type PostMinAggregateInputType = {
     id?: true
@@ -3397,6 +3418,7 @@ export namespace Prisma {
     content?: true
     thumbnail?: true
     published?: true
+    views?: true
     publishedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -3410,6 +3432,7 @@ export namespace Prisma {
     content?: true
     thumbnail?: true
     published?: true
+    views?: true
     publishedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -3424,6 +3447,7 @@ export namespace Prisma {
     thumbnail?: true
     tags?: true
     published?: true
+    views?: true
     publishedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -3468,6 +3492,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: PostAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PostSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PostMinAggregateInputType
@@ -3498,6 +3534,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: PostCountAggregateInputType | true
+    _avg?: PostAvgAggregateInputType
+    _sum?: PostSumAggregateInputType
     _min?: PostMinAggregateInputType
     _max?: PostMaxAggregateInputType
   }
@@ -3511,10 +3549,13 @@ export namespace Prisma {
     thumbnail: string | null
     tags: string[]
     published: boolean
+    views: number
     publishedAt: Date
     createdAt: Date
     updatedAt: Date
     _count: PostCountAggregateOutputType | null
+    _avg: PostAvgAggregateOutputType | null
+    _sum: PostSumAggregateOutputType | null
     _min: PostMinAggregateOutputType | null
     _max: PostMaxAggregateOutputType | null
   }
@@ -3542,6 +3583,7 @@ export namespace Prisma {
     thumbnail?: boolean
     tags?: boolean
     published?: boolean
+    views?: boolean
     publishedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3556,6 +3598,7 @@ export namespace Prisma {
     thumbnail?: boolean
     tags?: boolean
     published?: boolean
+    views?: boolean
     publishedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3570,6 +3613,7 @@ export namespace Prisma {
     thumbnail?: boolean
     tags?: boolean
     published?: boolean
+    views?: boolean
     publishedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3584,12 +3628,13 @@ export namespace Prisma {
     thumbnail?: boolean
     tags?: boolean
     published?: boolean
+    views?: boolean
     publishedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "excerpt" | "content" | "thumbnail" | "tags" | "published" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "excerpt" | "content" | "thumbnail" | "tags" | "published" | "views" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
 
   export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Post"
@@ -3603,6 +3648,7 @@ export namespace Prisma {
       thumbnail: string | null
       tags: string[]
       published: boolean
+      views: number
       publishedAt: Date
       createdAt: Date
       updatedAt: Date
@@ -4037,6 +4083,7 @@ export namespace Prisma {
     readonly thumbnail: FieldRef<"Post", 'String'>
     readonly tags: FieldRef<"Post", 'String[]'>
     readonly published: FieldRef<"Post", 'Boolean'>
+    readonly views: FieldRef<"Post", 'Int'>
     readonly publishedAt: FieldRef<"Post", 'DateTime'>
     readonly createdAt: FieldRef<"Post", 'DateTime'>
     readonly updatedAt: FieldRef<"Post", 'DateTime'>
@@ -6511,6 +6558,7 @@ export namespace Prisma {
     thumbnail: 'thumbnail',
     tags: 'tags',
     published: 'published',
+    views: 'views',
     publishedAt: 'publishedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -6804,6 +6852,7 @@ export namespace Prisma {
     thumbnail?: StringNullableFilter<"Post"> | string | null
     tags?: StringNullableListFilter<"Post">
     published?: BoolFilter<"Post"> | boolean
+    views?: IntFilter<"Post"> | number
     publishedAt?: DateTimeFilter<"Post"> | Date | string
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
@@ -6818,6 +6867,7 @@ export namespace Prisma {
     thumbnail?: SortOrderInput | SortOrder
     tags?: SortOrder
     published?: SortOrder
+    views?: SortOrder
     publishedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -6835,6 +6885,7 @@ export namespace Prisma {
     thumbnail?: StringNullableFilter<"Post"> | string | null
     tags?: StringNullableListFilter<"Post">
     published?: BoolFilter<"Post"> | boolean
+    views?: IntFilter<"Post"> | number
     publishedAt?: DateTimeFilter<"Post"> | Date | string
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
@@ -6849,12 +6900,15 @@ export namespace Prisma {
     thumbnail?: SortOrderInput | SortOrder
     tags?: SortOrder
     published?: SortOrder
+    views?: SortOrder
     publishedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PostCountOrderByAggregateInput
+    _avg?: PostAvgOrderByAggregateInput
     _max?: PostMaxOrderByAggregateInput
     _min?: PostMinOrderByAggregateInput
+    _sum?: PostSumOrderByAggregateInput
   }
 
   export type PostScalarWhereWithAggregatesInput = {
@@ -6869,6 +6923,7 @@ export namespace Prisma {
     thumbnail?: StringNullableWithAggregatesFilter<"Post"> | string | null
     tags?: StringNullableListFilter<"Post">
     published?: BoolWithAggregatesFilter<"Post"> | boolean
+    views?: IntWithAggregatesFilter<"Post"> | number
     publishedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
@@ -7181,6 +7236,7 @@ export namespace Prisma {
     thumbnail?: string | null
     tags?: PostCreatetagsInput | string[]
     published?: boolean
+    views?: number
     publishedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7195,6 +7251,7 @@ export namespace Prisma {
     thumbnail?: string | null
     tags?: PostCreatetagsInput | string[]
     published?: boolean
+    views?: number
     publishedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7209,6 +7266,7 @@ export namespace Prisma {
     thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: PostUpdatetagsInput | string[]
     published?: BoolFieldUpdateOperationsInput | boolean
+    views?: IntFieldUpdateOperationsInput | number
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7223,6 +7281,7 @@ export namespace Prisma {
     thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: PostUpdatetagsInput | string[]
     published?: BoolFieldUpdateOperationsInput | boolean
+    views?: IntFieldUpdateOperationsInput | number
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7237,6 +7296,7 @@ export namespace Prisma {
     thumbnail?: string | null
     tags?: PostCreatetagsInput | string[]
     published?: boolean
+    views?: number
     publishedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7251,6 +7311,7 @@ export namespace Prisma {
     thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: PostUpdatetagsInput | string[]
     published?: BoolFieldUpdateOperationsInput | boolean
+    views?: IntFieldUpdateOperationsInput | number
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7265,6 +7326,7 @@ export namespace Prisma {
     thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: PostUpdatetagsInput | string[]
     published?: BoolFieldUpdateOperationsInput | boolean
+    views?: IntFieldUpdateOperationsInput | number
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7587,6 +7649,17 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type PostCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -7596,9 +7669,14 @@ export namespace Prisma {
     thumbnail?: SortOrder
     tags?: SortOrder
     published?: SortOrder
+    views?: SortOrder
     publishedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PostAvgOrderByAggregateInput = {
+    views?: SortOrder
   }
 
   export type PostMaxOrderByAggregateInput = {
@@ -7609,6 +7687,7 @@ export namespace Prisma {
     content?: SortOrder
     thumbnail?: SortOrder
     published?: SortOrder
+    views?: SortOrder
     publishedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7622,12 +7701,17 @@ export namespace Prisma {
     content?: SortOrder
     thumbnail?: SortOrder
     published?: SortOrder
+    views?: SortOrder
     publishedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
+  export type PostSumOrderByAggregateInput = {
+    views?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -7635,7 +7719,12 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type MediaCountOrderByAggregateInput = {
@@ -7671,22 +7760,6 @@ export namespace Prisma {
 
   export type MediaSumOrderByAggregateInput = {
     size?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type ContactCountOrderByAggregateInput = {

@@ -11,10 +11,19 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboardPage() {
   // Fetch stats from DB
   const projectCount = await prisma.project.count();
-  const postCount = await prisma.post.count();
+  const postCount = await prisma.post.count({ where: { published: true } });
   const unreadMessagesCount = await prisma.contact.count({
     where: { read: false },
   });
+
+  // Calculate total blog views
+  const posts = await prisma.post.aggregate({
+    _sum: { views: true }
+  });
+  const totalViews = posts._sum.views || 0;
+  
+  // Format totalViews (e.g., 1200 -> 1.2k)
+  const formattedViews = totalViews >= 1000 ? (totalViews / 1000).toFixed(1) + 'k' : totalViews.toString();
 
   const stats = [
     {
@@ -39,8 +48,8 @@ export default async function AdminDashboardPage() {
       bg: "bg-orange-500/10",
     },
     {
-      name: "Page Views (Mock)",
-      value: "12.4k",
+      name: "Total Blog Views",
+      value: formattedViews,
       icon: Eye,
       color: "text-emerald-500",
       bg: "bg-emerald-500/10",
