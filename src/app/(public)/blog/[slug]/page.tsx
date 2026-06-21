@@ -196,13 +196,13 @@ export default async function BlogPostPage({ params }: Props) {
                     code({node, inline, className, children, ...props}: any) {
                       const match = /language-(\w+)/.exec(className || '')
                       return !inline && match ? (
-                        <div className="my-8 rounded-xl overflow-hidden border border-glass-border">
+                        <div className="not-prose my-8 rounded-xl overflow-hidden border border-glass-border">
                           <SyntaxHighlighter
                             {...props}
                             style={vscDarkPlus as any}
                             language={match[1]}
                             PreTag="div"
-                            customStyle={{ margin: 0, padding: '1.5rem', fontSize: '0.875rem' }}
+                            customStyle={{ margin: 0, padding: '1.5rem', fontSize: '0.95rem', lineHeight: '1.7' }}
                           >
                             {String(children).replace(/\n$/, '')}
                           </SyntaxHighlighter>
