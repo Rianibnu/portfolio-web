@@ -1,6 +1,7 @@
 import { createProject } from "../actions";
 import Link from "next/link";
 import { ArrowLeft, Save } from "lucide-react";
+import AiTextArea from "@/components/admin/ai-textarea";
 
 export default function NewProjectPage() {
   return (
@@ -58,13 +59,14 @@ export default function NewProjectPage() {
             <label className="text-sm font-bold text-foreground" htmlFor="description">
               Short Description <span className="text-error">*</span>
             </label>
-            <textarea
+            <AiTextArea
               id="description"
               name="description"
               required
               rows={2}
               className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none resize-none"
               placeholder="Brief summary of the project..."
+              type="short_description"
             />
           </div>
 
@@ -72,12 +74,13 @@ export default function NewProjectPage() {
             <label className="text-sm font-bold text-foreground" htmlFor="content">
               Full Content / Case Study
             </label>
-            <textarea
+            <AiTextArea
               id="content"
               name="content"
               rows={8}
               className="w-full px-4 py-3 rounded-lg bg-background-secondary border border-glass-border focus:border-foreground focus:ring-1 focus:ring-foreground transition-all outline-none"
               placeholder="Write the full case study here..."
+              type="full_content"
             />
           </div>
 
