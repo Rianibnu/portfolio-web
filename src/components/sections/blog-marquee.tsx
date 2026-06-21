@@ -15,9 +15,11 @@ export default async function BlogMarquee() {
   // We duplicate the posts array so the marquee loop is seamless
   // The marquee container will have two identical children moving left
   return (
-    <section className="py-24 md:py-32 border-t border-glass-border overflow-hidden bg-background">
-      <div className="container-custom mb-12 flex flex-col items-center text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-glass-border bg-background-secondary mb-6">
+    <section className="py-24 md:py-32 overflow-hidden bg-background-secondary relative">
+      <div className="absolute inset-0 bg-grid opacity-50 pointer-events-none" />
+      
+      <div className="container-custom mb-16 flex flex-col items-center text-center relative z-10">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-glass-border bg-background shadow-sm mb-6">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
           <span className="text-xs font-medium tracking-wide uppercase text-foreground-subtle">
             Insight & Pemikiran
@@ -28,9 +30,9 @@ export default async function BlogMarquee() {
         </h2>
       </div>
 
-      <div className="relative flex overflow-hidden group">
+      <div className="relative flex overflow-hidden group py-4">
         {/* Left Gradient Mask */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-background-secondary to-transparent z-10 pointer-events-none" />
 
         {/* First Marquee Track */}
         <div className="flex shrink-0 gap-6 px-3 animate-marquee hover:[animation-play-state:paused]">
@@ -69,7 +71,7 @@ export default async function BlogMarquee() {
         </div>
 
         {/* Right Gradient Mask */}
-        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-background-secondary to-transparent z-10 pointer-events-none" />
       </div>
     </section>
   );

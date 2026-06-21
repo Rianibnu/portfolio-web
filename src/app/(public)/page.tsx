@@ -2,6 +2,7 @@ import Hero from "@/components/sections/hero";
 import FeaturedProjects from "@/components/sections/featured-projects";
 import SkillsOverview from "@/components/sections/skills-overview";
 import BlogMarquee from "@/components/sections/blog-marquee";
+import ContactCTA from "@/components/sections/contact-cta";
 import { prisma } from "@/lib/prisma";
 
 export default async function HomePage() {
@@ -13,6 +14,7 @@ export default async function HomePage() {
       <FeaturedProjects />
       <SkillsOverview />
       <BlogMarquee />
+      <ContactCTA />
     </>
   );
 }
