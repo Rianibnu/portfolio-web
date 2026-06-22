@@ -6,6 +6,10 @@ import bcrypt from "bcryptjs";
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+    maxAge: 24 * 60 * 60, // Session expires after 24 hours (in seconds)
+  },
+  jwt: {
+    maxAge: 24 * 60 * 60, // JWT token expires after 24 hours (in seconds)
   },
   pages: {
     signIn: "/login",

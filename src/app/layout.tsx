@@ -73,6 +73,7 @@ export default function RootLayout({
     },
     sameAs: [
       "https://github.com/Rianibnu",
+      "https://linkedin.com/in/rianibnu",
       // Tambahkan URL LinkedIn atau sosmed lainnya di sini
     ]
   };
