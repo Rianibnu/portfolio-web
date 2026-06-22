@@ -37,12 +37,12 @@ export default function Footer() {
       {/* Decorative background blur */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="container-custom relative py-16 md:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+      <div className="container-custom relative py-10 md:py-14">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-8">
 
           {/* Brand & Description */}
-          <div className="md:col-span-5 space-y-8 flex flex-col items-center text-center md:items-start md:text-left">
-            <Link href="/" className="inline-block relative w-64 h-24 md:w-80 md:h-28 transition-transform hover:scale-105 duration-300 -ml-2">
+          <div className="md:col-span-5 space-y-4 flex flex-col items-center text-center md:items-start md:text-left">
+            <Link href="/" className="inline-block relative w-48 h-16 md:w-56 md:h-20 transition-transform hover:scale-105 duration-300 -ml-2">
               <Image
                 src="/images/logo-light-transparent.png"
                 alt="RIR Studio Logo"
@@ -70,12 +70,12 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div className="md:col-span-3 md:col-start-7 space-y-6 text-center md:text-left">
+          <div className="md:col-span-3 md:col-start-7 space-y-4 text-center md:text-left">
             <h3 className="text-sm font-bold text-foreground uppercase tracking-widest relative inline-block">
               Navigasi
               <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-0 w-1/2 h-[2px] bg-accent rounded-full" />
             </h3>
-            <ul className="space-y-4 pt-2">
+            <ul className="space-y-2.5 pt-1">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -91,19 +91,19 @@ export default function Footer() {
           </div>
 
           {/* Social */}
-          <div className="md:col-span-3 space-y-6 text-center md:text-left">
+          <div className="md:col-span-3 space-y-4 text-center md:text-left">
             <h3 className="text-sm font-bold text-foreground uppercase tracking-widest relative inline-block">
               Terhubung
               <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-0 w-1/2 h-[2px] bg-accent rounded-full" />
             </h3>
-            <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
+            <div className="flex flex-wrap justify-center md:justify-start gap-2.5 pt-1">
               {socialLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative p-3.5 rounded-xl border border-glass-border bg-background-secondary/50 text-foreground-muted hover:text-foreground hover:border-accent/50 hover:bg-background-secondary transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(var(--accent),0.2)]"
+                  className="group relative p-2.5 rounded-xl border border-glass-border bg-background-secondary/50 text-foreground-muted hover:text-foreground hover:border-accent/50 hover:bg-background-secondary transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(var(--accent),0.2)]"
                   aria-label={link.label}
                 >
                   <link.icon className="w-5 h-5 relative z-10" />
@@ -115,7 +115,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-20 pt-8 border-t border-glass-border flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-10 pt-6 border-t border-glass-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-foreground-subtle font-medium text-center md:text-left">
             &copy; {currentYear} RIR Studio. All rights reserved.
           </p>
