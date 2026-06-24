@@ -78,21 +78,37 @@ Aturan:
       }
     }
 
+    const groqApiKey = process.env.GROQ_API_KEY;
+    
+    if (!groqApiKey) {
+      return NextResponse.json(
+        { error: "API Key Groq belum diatur di server." },
+        { status: 500 }
+      );
+    }
+
     // Paksa menggunakan IPv4 karena VPS IDCloudHost sering bermasalah dengan rute IPv6 Node.js
     const agent = new https.Agent({ family: 4 });
 
     const fullPrompt = `${systemPrompt}\n\nInput dari pengguna:\n${prompt}`;
 
-    // Gunakan raw REST API call dengan node-fetch untuk mem-bypass SDK
+    // Gunakan Groq API (OpenAI Compatible)
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+      "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
         headers: {
+          "Authorization": `Bearer ${groqApiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: fullPrompt }] }],
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: prompt }
+          ],
+          temperature: 0.7,
+          max_completion_tokens: 1500,
         }),
         agent: agent,
       }
@@ -100,20 +116,20 @@ Aturan:
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error("Gemini API Error Response:", errorData);
-      throw new Error(`Google API Error: ${response.status} ${response.statusText} - ${errorData}`);
+      console.error("Groq API Error Response:", errorData);
+      throw new Error(`Groq API Error: ${response.status} - ${errorData}`);
     }
 
     const data = await response.json() as any;
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const text = data?.choices?.[0]?.message?.content;
 
     if (!text) {
-      throw new Error("Gagal mengekstrak teks dari respons Gemini");
+      throw new Error("Gagal mengekstrak teks dari respons Groq");
     }
 
     return NextResponse.json({ result: text });
   } catch (error: any) {
-    console.error("Gemini API Error:", error);
+    console.error("AI Generation Error:", error);
     return NextResponse.json(
       { error: error.message || "Terjadi kesalahan saat menghubungi AI" },
       { status: 500 }
