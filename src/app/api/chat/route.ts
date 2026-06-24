@@ -61,32 +61,37 @@ export async function POST(request: Request) {
 
     // Find or create session
     let currentSessionId = sessionId;
-    if (!currentSessionId) {
-      const session = await prisma.chatSession.create({
-        data: {
-          visitorIp,
-          userAgent,
-        },
-      });
-      currentSessionId = session.id;
-    } else {
-      // Update the session timestamp
-      await prisma.chatSession.update({
-        where: { id: currentSessionId },
-        data: { updatedAt: new Date() },
-      }).catch(() => {
-        // Session might not exist if DB was reset, create a new one
-      });
-    }
+    try {
+      if (!currentSessionId) {
+        const session = await prisma.chatSession.create({
+          data: {
+            visitorIp,
+            userAgent,
+          },
+        });
+        currentSessionId = session.id;
+      } else {
+        // Update the session timestamp
+        await prisma.chatSession.update({
+          where: { id: currentSessionId },
+          data: { updatedAt: new Date() },
+        });
+      }
 
-    // Save user message to DB
-    await prisma.chatMessage.create({
-      data: {
-        sessionId: currentSessionId,
-        role: "user",
-        content: message,
-      },
-    }).catch(console.error);
+      // Save user message to DB
+      if (currentSessionId) {
+        await prisma.chatMessage.create({
+          data: {
+            sessionId: currentSessionId,
+            role: "user",
+            content: message,
+          },
+        });
+      }
+    } catch (dbError) {
+      console.error("Failed to save to database (Schema probably out of sync):", dbError);
+      // We continue execution so the chat still works even if saving fails
+    }
 
     // Build conversation contents for Gemini
     const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [
@@ -153,13 +158,19 @@ export async function POST(request: Request) {
     }
 
     // Save assistant response to DB
-    await prisma.chatMessage.create({
-      data: {
-        sessionId: currentSessionId,
-        role: "assistant",
-        content: text,
-      },
-    }).catch(console.error);
+    if (currentSessionId) {
+      try {
+        await prisma.chatMessage.create({
+          data: {
+            sessionId: currentSessionId,
+            role: "assistant",
+            content: text,
+          },
+        });
+      } catch (dbError) {
+        console.error("Failed to save assistant msg to database:", dbError);
+      }
+    }
 
     return NextResponse.json({ message: text, sessionId: currentSessionId });
   } catch (error: any) {
