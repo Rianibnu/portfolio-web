@@ -116,11 +116,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
 
-    if (!apiKey || apiKey === "isi_dengan_api_key_gemini_kamu") {
+    if (!apiKey) {
       return NextResponse.json(
-        { message: "API Key Gemini belum dikonfigurasi." },
+        { message: "API Key Groq belum dikonfigurasi di server." },
         { status: 500 }
       );
     }
@@ -165,101 +165,65 @@ export async function POST(request: Request) {
       console.error("Failed to save to database (Schema probably out of sync):", dbError);
     }
 
-    // === BUILD PROMPT — SAME PATTERN AS /api/ai/generate ===
-    // Gabungkan system prompt + history + pesan baru jadi satu teks,
-    // persis seperti cara blog AI route bekerja.
-    let fullPrompt = SYSTEM_PROMPT + "\n\n";
+    // === BUILD PROMPT FOR GROQ (OpenAI Compatible) ===
+    const messages = [];
+    
+    // 1. System Prompt
+    messages.push({
+      role: "system",
+      content: SYSTEM_PROMPT,
+    });
 
-    // Tambahkan riwayat percakapan
+    // 2. Chat History
     if (history && Array.isArray(history)) {
-      fullPrompt += "Riwayat percakapan sebelumnya:\n";
       for (const msg of history as ChatMessage[]) {
-        if (msg.role === "user") {
-          fullPrompt += `Pengunjung: ${msg.content}\n`;
-        } else if (msg.role === "assistant") {
-          fullPrompt += `RIA: ${msg.content}\n`;
-        }
-      }
-      fullPrompt += "\n";
-    }
-
-    fullPrompt += `Pengunjung: ${message}\nRIA:`;
-
-    // === CALL GEMINI API — WITH RETRY & FALLBACK MODELS ===
-    // Paksa menggunakan IPv4 karena VPS IDCloudHost sering bermasalah dengan rute IPv6 Node.js
-    const agent = new https.Agent({ family: 4 });
-
-    // Daftar model + API version yang akan dicoba secara berurutan
-    const attempts = [
-      { model: "gemini-2.0-flash-lite", api: "v1beta" },
-      { model: "gemini-2.0-flash-lite", api: "v1" },
-      { model: "gemini-flash-latest", api: "v1beta" },
-      { model: "gemini-2.0-flash", api: "v1beta" },
-    ];
-
-    let text: string | null = null;
-    let lastError: string = "";
-    let isRateLimited = false;
-
-    // Helper: delay sederhana
-    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-    for (let i = 0; i < attempts.length; i++) {
-      const { model, api } = attempts[i];
-      
-      // Delay 1 detik antar retry (kecuali percobaan pertama)
-      if (i > 0) await delay(1000);
-
-      try {
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/${api}/models/${model}:generateContent?key=${apiKey}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: fullPrompt }] }],
-            }),
-            agent: agent,
-          }
-        );
-
-        if (response.status === 503 || response.status === 429) {
-          console.warn(`Model ${model} (${api}) unavailable (${response.status}), trying next...`);
-          lastError = `${model}: ${response.status}`;
-          isRateLimited = true;
-          continue;
-        }
-
-        if (!response.ok) {
-          const errorData = await response.text();
-          console.error(`Gemini Chat API Error (${model}/${api}):`, errorData);
-          lastError = `${model}: ${response.status}`;
-          continue;
-        }
-
-        const data = (await response.json()) as any;
-        text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        if (text) {
-          break; // Berhasil!
-        }
-      } catch (fetchError) {
-        console.error(`Fetch error for model ${model}:`, fetchError);
-        lastError = `${model}: fetch error`;
-        continue;
-      }
-    }
-
-    if (!text) {
-      if (isRateLimited) {
-        return NextResponse.json({
-          message: "Maaf, RIA sedang banyak yang ngobrol nih. Coba lagi dalam 1-2 menit ya! 😊",
-          sessionId: currentSessionId,
+        if (msg.role !== "user" && msg.role !== "assistant") continue;
+        messages.push({
+          role: msg.role,
+          content: msg.content,
         });
       }
-      throw new Error(`Semua model gagal merespons. Last: ${lastError}`);
+    }
+
+    // 3. Current User Message
+    messages.push({
+      role: "user",
+      content: message,
+    });
+
+    // === CALL GROQ API ===
+    // Menggunakan agent IPv4 untuk menghindari masalah DNS IPv6 di VPS
+    const agent = new https.Agent({ family: 4 });
+
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: messages,
+          temperature: 0.7,
+          max_completion_tokens: 500,
+        }),
+        agent: agent,
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("Groq API Error:", errorData);
+      throw new Error(`Groq API Error: ${response.status} - ${errorData}`);
+    }
+
+    const data = await response.json();
+    const text = data?.choices?.[0]?.message?.content;
+
+    if (!text) {
+      throw new Error("Gagal mengekstrak teks dari respons Groq");
     }
 
     // Save assistant response to DB
@@ -281,7 +245,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error("Chat API Error:", error);
     return NextResponse.json(
-      { message: "Waduh, ada gangguan teknis nih. Coba lagi dalam beberapa saat ya!" },
+      { message: "Waduh, koneksi ke otak AI saya lagi putus nih. Coba lagi bentar ya! 🤖" },
       { status: 500 }
     );
   }
