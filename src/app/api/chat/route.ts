@@ -189,20 +189,30 @@ export async function POST(request: Request) {
     // Paksa menggunakan IPv4 karena VPS IDCloudHost sering bermasalah dengan rute IPv6 Node.js
     const agent = new https.Agent({ family: 4 });
 
-    // Daftar model yang akan dicoba secara berurutan jika model utama sibuk (503)
-    const models = [
-      "gemini-flash-latest",
-      "gemini-2.0-flash",
-      "gemini-2.0-flash-lite",
+    // Daftar model + API version yang akan dicoba secara berurutan
+    const attempts = [
+      { model: "gemini-2.0-flash-lite", api: "v1beta" },
+      { model: "gemini-2.0-flash-lite", api: "v1" },
+      { model: "gemini-flash-latest", api: "v1beta" },
+      { model: "gemini-2.0-flash", api: "v1beta" },
     ];
 
     let text: string | null = null;
     let lastError: string = "";
+    let isRateLimited = false;
 
-    for (const model of models) {
+    // Helper: delay sederhana
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+    for (let i = 0; i < attempts.length; i++) {
+      const { model, api } = attempts[i];
+      
+      // Delay 1 detik antar retry (kecuali percobaan pertama)
+      if (i > 0) await delay(1000);
+
       try {
         const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+          `https://generativelanguage.googleapis.com/${api}/models/${model}:generateContent?key=${apiKey}`,
           {
             method: "POST",
             headers: {
@@ -216,15 +226,15 @@ export async function POST(request: Request) {
         );
 
         if (response.status === 503 || response.status === 429) {
-          // Model sibuk atau rate limited, coba model berikutnya
-          console.warn(`Model ${model} unavailable (${response.status}), trying next...`);
+          console.warn(`Model ${model} (${api}) unavailable (${response.status}), trying next...`);
           lastError = `${model}: ${response.status}`;
+          isRateLimited = true;
           continue;
         }
 
         if (!response.ok) {
           const errorData = await response.text();
-          console.error(`Gemini Chat API Error (${model}):`, errorData);
+          console.error(`Gemini Chat API Error (${model}/${api}):`, errorData);
           lastError = `${model}: ${response.status}`;
           continue;
         }
@@ -233,7 +243,7 @@ export async function POST(request: Request) {
         text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
         if (text) {
-          break; // Berhasil! Keluar dari loop
+          break; // Berhasil!
         }
       } catch (fetchError) {
         console.error(`Fetch error for model ${model}:`, fetchError);
@@ -243,6 +253,12 @@ export async function POST(request: Request) {
     }
 
     if (!text) {
+      if (isRateLimited) {
+        return NextResponse.json({
+          message: "Maaf, RIA sedang banyak yang ngobrol nih. Coba lagi dalam 1-2 menit ya! 😊",
+          sessionId: currentSessionId,
+        });
+      }
       throw new Error(`Semua model gagal merespons. Last: ${lastError}`);
     }
 
