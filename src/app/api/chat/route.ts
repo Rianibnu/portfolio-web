@@ -15,16 +15,12 @@ const SYSTEM_PROMPT = `Kamu bernama "RIA" (Rian's Intelligent Assistant), asiste
 ## Cara Berkomunikasi:
 - Gunakan bahasa Indonesia yang santai tapi tetap profesional, seperti teman kerja yang ramah
 - Jawab dengan ringkas dan to the point (maksimal 2-3 paragraf pendek)
-- Gunakan emoji sesekali untuk membuat percakapan terasa hangat 😊
+- Gunakan emoji sesekali untuk membuat percakapan terasa hangat
 - Jangan terlalu formal atau kaku, tapi tetap sopan
 - Jika ditanya hal di luar konteks Rian/web development, jawab dengan sopan bahwa kamu fokus membantu soal portofolio dan jasa Rian
 - Jika pengunjung tertarik dengan jasa Rian, arahkan ke halaman /contact
 - Jika pengunjung ingin melihat hasil kerja, arahkan ke halaman /projects
-- Jika pengunjung ingin membaca artikel, arahkan ke halaman /blog
-
-## Contoh Gaya Jawaban:
-- "Hai! 👋 Rian itu jago banget di Laravel dan Next.js. Kalau kamu butuh website modern, bisa langsung hubungi dia di halaman Contact ya!"
-- "Wah, pertanyaan bagus! 🚀 Untuk proyek seperti itu, biasanya Rian pakai kombinasi Next.js + PostgreSQL. Mau lihat contoh kerjanya? Cek halaman Projects!"`;
+- Jika pengunjung ingin membaca artikel, arahkan ke halaman /blog`;
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -59,7 +55,7 @@ export async function POST(request: Request) {
       "unknown";
     const userAgent = headersList.get("user-agent") || "unknown";
 
-    // Find or create session
+    // Find or create session (resilient - won't break chat if DB fails)
     let currentSessionId = sessionId;
     try {
       if (!currentSessionId) {
@@ -71,7 +67,6 @@ export async function POST(request: Request) {
         });
         currentSessionId = session.id;
       } else {
-        // Update the session timestamp
         await prisma.chatSession.update({
           where: { id: currentSessionId },
           data: { updatedAt: new Date() },
@@ -90,43 +85,33 @@ export async function POST(request: Request) {
       }
     } catch (dbError) {
       console.error("Failed to save to database (Schema probably out of sync):", dbError);
-      // We continue execution so the chat still works even if saving fails
     }
 
-    // Build conversation contents for Gemini
-    const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
+    // === BUILD PROMPT — SAME PATTERN AS /api/ai/generate ===
+    // Gabungkan system prompt + history + pesan baru jadi satu teks,
+    // persis seperti cara blog AI route bekerja.
+    let fullPrompt = SYSTEM_PROMPT + "\n\n";
 
-    // Append chat history (skip the hardcoded greeting if it's the very first message to prevent double model messages)
+    // Tambahkan riwayat percakapan
     if (history && Array.isArray(history)) {
-      let isFirst = true;
+      fullPrompt += "Riwayat percakapan sebelumnya:\n";
       for (const msg of history as ChatMessage[]) {
-        if (msg.role !== "user" && msg.role !== "assistant") continue;
-        
-        // Skip the initial greeting if it's the very first message in history
-        // because Gemini API strictly requires alternating user/model roles 
-        // and usually expects the first message to be from 'user'.
-        if (isFirst && msg.role === "assistant" && msg.content.includes("Hai! 👋 Saya RIA")) {
-          isFirst = false;
-          continue; 
+        if (msg.role === "user") {
+          fullPrompt += `Pengunjung: ${msg.content}\n`;
+        } else if (msg.role === "assistant") {
+          fullPrompt += `RIA: ${msg.content}\n`;
         }
-        
-        isFirst = false;
-        contents.push({
-          role: msg.role === "assistant" ? "model" : "user",
-          parts: [{ text: msg.content }],
-        });
       }
+      fullPrompt += "\n";
     }
 
-    // Add the current user message
-    contents.push({
-      role: "user",
-      parts: [{ text: message }],
-    });
+    fullPrompt += `Pengunjung: ${message}\nRIA:`;
 
-    // Use raw REST API with node-fetch (IPv4) — same pattern as /api/ai/generate
+    // === CALL GEMINI API — 100% IDENTICAL TO /api/ai/generate ===
+    // Paksa menggunakan IPv4 karena VPS IDCloudHost sering bermasalah dengan rute IPv6 Node.js
     const agent = new https.Agent({ family: 4 });
 
+    // Gunakan raw REST API call dengan node-fetch untuk mem-bypass SDK
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
       {
@@ -135,17 +120,9 @@ export async function POST(request: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          systemInstruction: {
-            parts: [{ text: SYSTEM_PROMPT }]
-          },
-          contents,
-          generationConfig: {
-            maxOutputTokens: 400,
-            temperature: 0.8,
-            topP: 0.9,
-          },
+          contents: [{ parts: [{ text: fullPrompt }] }],
         }),
-        agent,
+        agent: agent,
       }
     );
 
@@ -181,7 +158,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error("Chat API Error:", error);
     return NextResponse.json(
-      { message: "Waduh, ada gangguan teknis nih 😅 Coba lagi dalam beberapa saat ya!" },
+      { message: "Waduh, ada gangguan teknis nih. Coba lagi dalam beberapa saat ya!" },
       { status: 500 }
     );
   }
