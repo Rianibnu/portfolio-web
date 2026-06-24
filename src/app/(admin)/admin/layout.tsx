@@ -8,6 +8,7 @@ import {
   FolderGit2, 
   FileText, 
   MessageSquare, 
+  Bot,
   LogOut,
   Code2
 } from "lucide-react";
@@ -18,6 +19,7 @@ const sidebarLinks = [
   { name: "Projects", href: "/admin/projects", icon: FolderGit2 },
   { name: "Blog Posts", href: "/admin/blog", icon: FileText },
   { name: "Messages", href: "/admin/messages", icon: MessageSquare },
+  { name: "Chat Logs", href: "/admin/chats", icon: Bot },
 ];
 
 export default function AdminLayout({

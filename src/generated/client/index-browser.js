@@ -181,6 +181,23 @@ exports.Prisma.ContactScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ChatSessionScalarFieldEnum = {
+  id: 'id',
+  visitorIp: 'visitorIp',
+  userAgent: 'userAgent',
+  read: 'read',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ChatMessageScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  role: 'role',
+  content: 'content',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -202,7 +219,9 @@ exports.Prisma.ModelName = {
   Project: 'Project',
   Post: 'Post',
   Media: 'Media',
-  Contact: 'Contact'
+  Contact: 'Contact',
+  ChatSession: 'ChatSession',
+  ChatMessage: 'ChatMessage'
 };
 
 /**

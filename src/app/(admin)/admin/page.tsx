@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { FolderGit2, FileText, MessageSquare, Eye } from "lucide-react";
+import { FolderGit2, FileText, MessageSquare, Eye, Bot } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -21,6 +21,10 @@ export default async function AdminDashboardPage() {
     _sum: { views: true }
   });
   const totalViews = posts._sum.views || 0;
+  
+  // Chat stats
+  const chatSessionCount = await prisma.chatSession.count();
+  const unreadChatsCount = await prisma.chatSession.count({ where: { read: false } });
   
   // Format totalViews (e.g., 1200 -> 1.2k)
   const formattedViews = totalViews >= 1000 ? (totalViews / 1000).toFixed(1) + 'k' : totalViews.toString();
@@ -53,6 +57,13 @@ export default async function AdminDashboardPage() {
       icon: Eye,
       color: "text-emerald-500",
       bg: "bg-emerald-500/10",
+    },
+    {
+      name: "Chat Sessions",
+      value: `${unreadChatsCount > 0 ? unreadChatsCount + " baru / " : ""}${chatSessionCount}`,
+      icon: Bot,
+      color: "text-cyan-500",
+      bg: "bg-cyan-500/10",
     },
   ];
 
