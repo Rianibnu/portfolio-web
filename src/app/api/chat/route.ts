@@ -185,36 +185,65 @@ export async function POST(request: Request) {
 
     fullPrompt += `Pengunjung: ${message}\nRIA:`;
 
-    // === CALL GEMINI API — 100% IDENTICAL TO /api/ai/generate ===
+    // === CALL GEMINI API — WITH RETRY & FALLBACK MODELS ===
     // Paksa menggunakan IPv4 karena VPS IDCloudHost sering bermasalah dengan rute IPv6 Node.js
     const agent = new https.Agent({ family: 4 });
 
-    // Gunakan raw REST API call dengan node-fetch untuk mem-bypass SDK
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: fullPrompt }] }],
-        }),
-        agent: agent,
-      }
-    );
+    // Daftar model yang akan dicoba secara berurutan jika model utama sibuk (503)
+    const models = [
+      "gemini-flash-latest",
+      "gemini-2.0-flash",
+      "gemini-2.0-flash-lite",
+    ];
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error("Gemini Chat API Error Response:", errorData);
-      throw new Error(`Google API Error: ${response.status} - ${errorData}`);
+    let text: string | null = null;
+    let lastError: string = "";
+
+    for (const model of models) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: fullPrompt }] }],
+            }),
+            agent: agent,
+          }
+        );
+
+        if (response.status === 503 || response.status === 429) {
+          // Model sibuk atau rate limited, coba model berikutnya
+          console.warn(`Model ${model} unavailable (${response.status}), trying next...`);
+          lastError = `${model}: ${response.status}`;
+          continue;
+        }
+
+        if (!response.ok) {
+          const errorData = await response.text();
+          console.error(`Gemini Chat API Error (${model}):`, errorData);
+          lastError = `${model}: ${response.status}`;
+          continue;
+        }
+
+        const data = (await response.json()) as any;
+        text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (text) {
+          break; // Berhasil! Keluar dari loop
+        }
+      } catch (fetchError) {
+        console.error(`Fetch error for model ${model}:`, fetchError);
+        lastError = `${model}: fetch error`;
+        continue;
+      }
     }
 
-    const data = (await response.json()) as any;
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
     if (!text) {
-      throw new Error("Gagal mengekstrak teks dari respons Gemini");
+      throw new Error(`Semua model gagal merespons. Last: ${lastError}`);
     }
 
     // Save assistant response to DB
