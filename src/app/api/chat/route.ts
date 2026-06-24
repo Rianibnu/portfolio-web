@@ -94,21 +94,23 @@ export async function POST(request: Request) {
     }
 
     // Build conversation contents for Gemini
-    const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [
-      {
-        role: "user",
-        parts: [{ text: SYSTEM_PROMPT }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "Siap! Saya RIA, asisten virtual Rian. Saya akan membantu pengunjung dengan ramah dan informatif. 😊" }],
-      },
-    ];
+    const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
 
-    // Append chat history
+    // Append chat history (skip the hardcoded greeting if it's the very first message to prevent double model messages)
     if (history && Array.isArray(history)) {
+      let isFirst = true;
       for (const msg of history as ChatMessage[]) {
         if (msg.role !== "user" && msg.role !== "assistant") continue;
+        
+        // Skip the initial greeting if it's the very first message in history
+        // because Gemini API strictly requires alternating user/model roles 
+        // and usually expects the first message to be from 'user'.
+        if (isFirst && msg.role === "assistant" && msg.content.includes("Hai! 👋 Saya RIA")) {
+          isFirst = false;
+          continue; 
+        }
+        
+        isFirst = false;
         contents.push({
           role: msg.role === "assistant" ? "model" : "user",
           parts: [{ text: msg.content }],
@@ -133,6 +135,9 @@ export async function POST(request: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          systemInstruction: {
+            parts: [{ text: SYSTEM_PROMPT }]
+          },
           contents,
           generationConfig: {
             maxOutputTokens: 400,
