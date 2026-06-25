@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Sparkles } from "lucide-react";
-import TechStackOrbit from "@/components/ui/tech-stack-orbit";
+import ParticleNetwork from "@/components/ui/particle-network";
 
 export default function Hero({ projectCount }: { projectCount?: number }) {
   return (
@@ -19,9 +19,12 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
       </div>
 
       <div className="container-custom relative z-10 w-full">
-        {/* Tech Stack Orbit — far right, BEHIND the text */}
-        <div className="absolute -right-8 xl:-right-4 2xl:right-4 top-1/2 -translate-y-1/2 hidden lg:flex items-center justify-center z-0 opacity-70">
-          <TechStackOrbit />
+        {/* Particle Network — positioned on the right side, fading out to the left */}
+        <div 
+          className="absolute right-0 top-0 bottom-0 w-[65%] hidden lg:block z-0 pointer-events-none opacity-80"
+          style={{ maskImage: "linear-gradient(to right, transparent, black 30%, black 100%)", WebkitMaskImage: "linear-gradient(to right, transparent, black 30%, black 100%)" }}
+        >
+          <ParticleNetwork />
         </div>
 
         <div className="max-w-5xl relative z-10">
