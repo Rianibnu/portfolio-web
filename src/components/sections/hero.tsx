@@ -19,8 +19,8 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
       </div>
 
       <div className="container-custom relative z-10 w-full">
-        {/* Tech Stack Orbit — positioned on the right, BEHIND the text */}
-        <div className="absolute right-8 xl:right-16 2xl:right-24 top-1/2 -translate-y-1/2 hidden lg:flex items-center justify-center z-0 opacity-60">
+        {/* Tech Stack Orbit — far right, BEHIND the text */}
+        <div className="absolute -right-8 xl:-right-4 2xl:right-4 top-1/2 -translate-y-1/2 hidden lg:flex items-center justify-center z-0 opacity-70">
           <TechStackOrbit />
         </div>
 

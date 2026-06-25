@@ -24,7 +24,7 @@ export default function TechStackOrbit() {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="relative w-[340px] h-[340px] xl:w-[420px] xl:h-[420px]"
+      className="relative w-[450px] h-[450px] xl:w-[550px] xl:h-[550px]"
     >
       {/* Ambient glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--accent-primary),transparent_70%)] opacity-[0.06] blur-3xl scale-150" />
