@@ -13,6 +13,7 @@ import {
   Code2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import IdleAutoLogout from "@/components/IdleAutoLogout";
 
 const sidebarLinks = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -31,6 +32,8 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen flex bg-background">
+      {/* Auto-logout on inactivity (30 minutes) */}
+      <IdleAutoLogout />
       {/* Sidebar */}
       <aside className="w-64 border-r border-glass-border bg-background hidden md:flex flex-col fixed inset-y-0 left-0 z-40 overflow-y-auto">
         <div className="h-20 flex items-center px-8 border-b border-glass-border min-h-[5rem]">

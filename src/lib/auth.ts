@@ -3,13 +3,30 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
+// Session timeout: 30 minutes (in seconds)
+const SESSION_MAX_AGE = 30 * 60;
+
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // Session expires after 24 hours (in seconds)
+    maxAge: SESSION_MAX_AGE, // Session expires after 30 minutes
+    updateAge: 5 * 60, // Refresh session token every 5 minutes on activity
   },
   jwt: {
-    maxAge: 24 * 60 * 60, // JWT token expires after 24 hours (in seconds)
+    maxAge: SESSION_MAX_AGE, // JWT token expires after 30 minutes
+  },
+  cookies: {
+    sessionToken: {
+      name: process.env.NODE_ENV === "production"
+        ? "__Secure-next-auth.session-token"
+        : "next-auth.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
   },
   pages: {
     signIn: "/login",

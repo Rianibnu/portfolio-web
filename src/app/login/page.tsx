@@ -1,16 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Code2 } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Code2, ShieldAlert, Timer } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // Show context-aware message when redirected due to session timeout
+  const logoutReason = searchParams.get("reason");
+  const sessionMessage = useMemo(() => {
+    switch (logoutReason) {
+      case "idle":
+        return {
+          icon: Timer,
+          text: "Sesi Anda berakhir karena tidak ada aktivitas selama 30 menit. Silakan login kembali.",
+          color: "text-amber-500",
+          bg: "bg-amber-500/10",
+          border: "border-amber-500/20",
+        };
+      case "expired":
+        return {
+          icon: ShieldAlert,
+          text: "Sesi Anda telah kedaluwarsa. Silakan login kembali untuk melanjutkan.",
+          color: "text-blue-500",
+          bg: "bg-blue-500/10",
+          border: "border-blue-500/20",
+        };
+      default:
+        return null;
+    }
+  }, [logoutReason]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +77,14 @@ export default function LoginPage() {
           <p className="text-foreground-muted text-sm mb-8">
             Sign in to manage your portfolio
           </p>
+
+          {/* Session timeout notification */}
+          {sessionMessage && (
+            <div className={`flex items-start gap-3 p-4 text-sm rounded-xl mb-6 ${sessionMessage.bg} border ${sessionMessage.border}`}>
+              <sessionMessage.icon className={`w-5 h-5 ${sessionMessage.color} shrink-0 mt-0.5`} />
+              <span className="text-foreground text-left">{sessionMessage.text}</span>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4 text-left">
             {error && (
