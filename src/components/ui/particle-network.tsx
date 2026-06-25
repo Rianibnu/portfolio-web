@@ -34,17 +34,17 @@ export default function ParticleNetwork() {
 
     const initParticles = () => {
       particles = [];
-      // Adjust density based on screen size
-      const density = window.innerWidth < 768 ? 15000 : 10000;
+      // Adjust density based on screen size (lower number = more particles)
+      const density = window.innerWidth < 768 ? 10000 : 7000;
       const particleCount = Math.floor((canvas.width * canvas.height) / density);
       
       for (let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.6, // Slow, elegant speed
-          vy: (Math.random() - 0.5) * 0.6,
-          radius: Math.random() * 1.5 + 0.5, // Tiny dots
+          vx: (Math.random() - 0.5) * 0.7, // Slightly faster but still elegant
+          vy: (Math.random() - 0.5) * 0.7,
+          radius: Math.random() * 2 + 1, // Larger dots (1px to 3px)
         });
       }
     };
@@ -54,7 +54,8 @@ export default function ParticleNetwork() {
       
       // Get computed color of the primary text to blend perfectly with light/dark mode
       const isDark = document.documentElement.classList.contains("dark");
-      const dotColor = isDark ? "rgba(255, 255, 255, 0.4)" : "rgba(0, 0, 0, 0.3)";
+      // Stronger opacity for visibility
+      const dotColor = isDark ? "rgba(255, 255, 255, 0.6)" : "rgba(0, 0, 0, 0.5)";
       const lineColorBase = isDark ? "255, 255, 255" : "0, 0, 0"; 
       
       // Add a subtle accent color glow logic
@@ -81,10 +82,11 @@ export default function ParticleNetwork() {
           const dy = p.y - p2.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 130) { // Connect if close enough
+          if (distance < 150) { // Connect if close enough (increased distance)
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(${lineColorBase}, ${(1 - distance / 130) * 0.2})`;
-            ctx.lineWidth = 0.8;
+            // Higher line opacity multiplier
+            ctx.strokeStyle = `rgba(${lineColorBase}, ${(1 - distance / 150) * 0.35})`;
+            ctx.lineWidth = 1;
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.stroke();

@@ -19,11 +19,8 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
       </div>
 
       <div className="container-custom relative z-10 w-full">
-        {/* Particle Network — positioned on the right side, fading out to the left */}
-        <div 
-          className="absolute right-0 top-0 bottom-0 w-[65%] hidden lg:block z-0 pointer-events-none opacity-80"
-          style={{ maskImage: "linear-gradient(to right, transparent, black 30%, black 100%)", WebkitMaskImage: "linear-gradient(to right, transparent, black 30%, black 100%)" }}
-        >
+        {/* Particle Network Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
           <ParticleNetwork />
         </div>
 
