@@ -74,7 +74,7 @@ export default function BlogCarousel({ posts }: { posts: Post[] }) {
       <div
         ref={scrollContainerRef}
         onScroll={checkScroll}
-        className="flex gap-6 overflow-x-auto snap-x snap-mandatory px-4 md:px-12 pb-8 pt-4 hide-scrollbar"
+        className="flex gap-6 overflow-x-auto snap-x snap-mandatory px-[calc(50vw-150px)] sm:px-[calc(50vw-190px)] md:px-12 pb-8 pt-4 hide-scrollbar"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <style dangerouslySetInnerHTML={{ __html: `
