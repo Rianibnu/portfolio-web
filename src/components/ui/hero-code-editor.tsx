@@ -191,7 +191,7 @@ export default function HeroCodeEditor() {
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="relative w-full max-w-lg"
+      className="relative w-full max-w-xl"
     >
       {/* Glow effect behind editor */}
       <div className="absolute -inset-4 bg-[radial-gradient(ellipse_at_center,var(--accent-primary),transparent_70%)] opacity-[0.07] blur-3xl rounded-3xl" />

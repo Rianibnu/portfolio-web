@@ -19,9 +19,9 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
       </div>
 
       <div className="container-custom relative z-10 w-full">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 xl:gap-12 items-center">
           {/* Left side — Text content */}
-          <div className="flex-1 max-w-2xl">
+          <div>
             {/* Status Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -38,12 +38,12 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
               </span>
             </motion.div>
 
-            {/* Main Heading */}
+            {/* Main Heading — responsive sizes tuned for 2-col grid */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tighter leading-[1.05]"
+              className="text-5xl sm:text-6xl lg:text-[4rem] xl:text-[4.5rem] 2xl:text-[5rem] font-extrabold tracking-tighter leading-[1.05]"
             >
               <span className="text-foreground">Rian Ibnu </span>
               <span className="text-foreground-muted font-medium">Rizal</span>
@@ -57,7 +57,7 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-8 text-lg md:text-xl text-foreground-muted max-w-2xl leading-relaxed font-light"
+              className="mt-8 text-base md:text-lg lg:text-base xl:text-lg text-foreground-muted leading-relaxed font-light"
             >
               Lulusan S1 Teknik Informatika dengan spesialisasi pengembangan aplikasi sebagai Full-Stack Developer dan manajemen IT Support/Helpdesk. Berpengalaman merancang flowmap bisnis, integrasi sistem, dan operasional jaringan.
             </motion.p>
@@ -67,7 +67,7 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-12 flex flex-col sm:flex-row items-start gap-4"
+              className="mt-10 flex flex-col sm:flex-row items-start gap-4"
             >
               <Link
                 href="/projects"
@@ -89,7 +89,7 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.6 }}
-              className="mt-20 flex items-center gap-8 md:gap-16 border-t border-glass-border pt-8"
+              className="mt-16 flex items-center gap-8 md:gap-16 border-t border-glass-border pt-8"
             >
               {[
                 { value: "4+", label: "Tahun Pengalaman" },
@@ -104,7 +104,7 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
           </div>
 
           {/* Right side — Animated Code Editor */}
-          <div className="flex-1 hidden lg:flex justify-end items-center">
+          <div className="hidden lg:flex justify-center xl:justify-end items-center">
             <HeroCodeEditor />
           </div>
         </div>
