@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Sparkles } from "lucide-react";
-import HeroCodeEditor from "@/components/ui/hero-code-editor";
+import TechStackOrbit from "@/components/ui/tech-stack-orbit";
 
 export default function Hero({ projectCount }: { projectCount?: number }) {
   return (
@@ -19,94 +19,91 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
       </div>
 
       <div className="container-custom relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 xl:gap-12 items-center">
-          {/* Left side — Text content */}
-          <div>
-            {/* Status Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/5 bg-white/5 backdrop-blur-sm mb-10"
-            >
-              <span className="relative flex h-2 w-2 ml-1">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-success" />
-              </span>
-              <span className="text-xs font-medium tracking-wide uppercase text-foreground-subtle mr-2">
-                Full Stack Web Developer &amp; IT Support
-              </span>
-            </motion.div>
+        {/* Tech Stack Orbit — positioned on the right, behind the text on overlap */}
+        <div className="absolute right-8 xl:right-16 2xl:right-24 top-1/2 -translate-y-1/2 hidden lg:flex items-center justify-center">
+          <TechStackOrbit />
+        </div>
 
-            {/* Main Heading — responsive sizes tuned for 2-col grid */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl sm:text-6xl lg:text-[4rem] xl:text-[4.5rem] 2xl:text-[5rem] font-extrabold tracking-tighter leading-[1.05]"
-            >
-              <span className="text-foreground">Rian Ibnu </span>
-              <span className="text-foreground-muted font-medium">Rizal</span>
-              <br />
-              <span className="text-foreground-muted font-medium">Founder</span>
-              <span className="text-foreground"> RIR Studio.</span>
-            </motion.h1>
+        <div className="max-w-5xl">
+          {/* Status Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/5 bg-white/5 backdrop-blur-sm mb-10"
+          >
+            <span className="relative flex h-2 w-2 ml-1">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-success" />
+            </span>
+            <span className="text-xs font-medium tracking-wide uppercase text-foreground-subtle mr-2">
+              Full Stack Web Developer &amp; IT Support
+            </span>
+          </motion.div>
 
-            {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-8 text-base md:text-lg lg:text-base xl:text-lg text-foreground-muted leading-relaxed font-light"
-            >
-              Lulusan S1 Teknik Informatika dengan spesialisasi pengembangan aplikasi sebagai Full-Stack Developer dan manajemen IT Support/Helpdesk. Berpengalaman merancang flowmap bisnis, integrasi sistem, dan operasional jaringan.
-            </motion.p>
+          {/* Main Heading — ORIGINAL size restored */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] font-extrabold tracking-tighter leading-[1.05]"
+          >
+            <span className="text-foreground">Rian Ibnu </span>
+            <span className="text-foreground-muted font-medium">Rizal</span>
+            <br />
+            <span className="text-foreground-muted font-medium">Founder</span>
+            <span className="text-foreground"> RIR Studio.</span>
+          </motion.h1>
 
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-10 flex flex-col sm:flex-row items-start gap-4"
-            >
-              <Link
-                href="/projects"
-                className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-foreground text-background font-semibold text-sm hover:scale-105 transition-all duration-300"
-              >
-                Lihat Karya Saya
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-glass-border font-medium text-sm text-foreground hover:bg-white/5 transition-colors duration-300"
-              >
-                Hubungi Saya
-              </Link>
-            </motion.div>
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 text-lg md:text-xl text-foreground-muted max-w-2xl leading-relaxed font-light"
+          >
+            Lulusan S1 Teknik Informatika dengan spesialisasi pengembangan aplikasi sebagai Full-Stack Developer dan manajemen IT Support/Helpdesk. Berpengalaman merancang flowmap bisnis, integrasi sistem, dan operasional jaringan.
+          </motion.p>
 
-            {/* Minimal Stats */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.6 }}
-              className="mt-16 flex items-center gap-8 md:gap-16 border-t border-glass-border pt-8"
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-12 flex flex-col sm:flex-row items-start gap-4"
+          >
+            <Link
+              href="/projects"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-foreground text-background font-semibold text-sm hover:scale-105 transition-all duration-300"
             >
-              {[
-                { value: "4+", label: "Tahun Pengalaman" },
-                { value: `${projectCount || 15}+`, label: "Proyek Diselesaikan" },
-              ].map((stat) => (
-                <div key={stat.label} className="flex flex-col gap-1">
-                  <span className="text-3xl font-bold tracking-tight">{stat.value}</span>
-                  <span className="text-sm text-foreground-subtle uppercase tracking-wider">{stat.label}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+              Lihat Karya Saya
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-glass-border font-medium text-sm text-foreground hover:bg-white/5 transition-colors duration-300"
+            >
+              Hubungi Saya
+            </Link>
+          </motion.div>
 
-          {/* Right side — Animated Code Editor */}
-          <div className="hidden lg:flex justify-center xl:justify-end items-center">
-            <HeroCodeEditor />
-          </div>
+          {/* Minimal Stats */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            className="mt-20 flex items-center gap-8 md:gap-16 border-t border-glass-border pt-8 max-w-3xl"
+          >
+            {[
+              { value: "4+", label: "Tahun Pengalaman" },
+              { value: `${projectCount || 15}+`, label: "Proyek Diselesaikan" },
+            ].map((stat) => (
+              <div key={stat.label} className="flex flex-col gap-1">
+                <span className="text-3xl font-bold tracking-tight">{stat.value}</span>
+                <span className="text-sm text-foreground-subtle uppercase tracking-wider">{stat.label}</span>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
