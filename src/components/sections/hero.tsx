@@ -19,12 +19,12 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
       </div>
 
       <div className="container-custom relative z-10 w-full">
-        {/* Tech Stack Orbit — positioned on the right, behind the text on overlap */}
-        <div className="absolute right-8 xl:right-16 2xl:right-24 top-1/2 -translate-y-1/2 hidden lg:flex items-center justify-center">
+        {/* Tech Stack Orbit — positioned on the right, BEHIND the text */}
+        <div className="absolute right-8 xl:right-16 2xl:right-24 top-1/2 -translate-y-1/2 hidden lg:flex items-center justify-center z-0 opacity-60">
           <TechStackOrbit />
         </div>
 
-        <div className="max-w-5xl">
+        <div className="max-w-5xl relative z-10">
           {/* Status Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
