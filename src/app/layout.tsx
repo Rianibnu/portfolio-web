@@ -107,6 +107,11 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script 
+          async 
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7951305084468475"
+          crossOrigin="anonymous"
+        ></script>
       </head>
       <body
         className="min-h-full flex flex-col bg-background text-foreground"
