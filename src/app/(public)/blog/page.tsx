@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Blog",
   description:
     "Read my latest articles about web development, technology, and software engineering.",
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id"}/blog`,
+  },
 };
 
 export const dynamic = "force-dynamic";

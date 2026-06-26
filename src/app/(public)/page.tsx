@@ -5,6 +5,8 @@ import BlogHighlight from "@/components/sections/blog-highlight";
 import ContactCTA from "@/components/sections/contact-cta";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const projectCount = await prisma.project.count();
 

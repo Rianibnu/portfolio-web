@@ -5,6 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import AiTextArea from "@/components/admin/ai-textarea";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditPostPage({
   params,
 }: {

@@ -55,6 +55,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id",
+  },
 };
 
 export default function RootLayout({
@@ -62,22 +65,36 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Rian Ibnu Rizal",
-    url: "https://rirstudio.my.id",
-    jobTitle: "Full Stack Web Developer",
-    worksFor: {
-      "@type": "Organization",
-      name: "RIR Studio"
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id";
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Rian Ibnu Rizal — Full Stack Web Developer",
+      url: baseUrl,
+      description: "Full Stack Web Developer & IT Support. Ahli membangun solusi digital efisien menggunakan Laravel, VueJS, PostgreSQL, dan MySQL.",
+      publisher: {
+        "@type": "Person",
+        name: "Rian Ibnu Rizal",
+      },
     },
-    sameAs: [
-      "https://github.com/Rianibnu",
-      "https://linkedin.com/in/rianibnu",
-      // Tambahkan URL LinkedIn atau sosmed lainnya di sini
-    ]
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: "Rian Ibnu Rizal",
+      url: baseUrl,
+      jobTitle: "Full Stack Web Developer",
+      worksFor: {
+        "@type": "Organization",
+        name: "RIR Studio",
+      },
+      sameAs: [
+        "https://github.com/Rianibnu",
+        "https://linkedin.com/in/rianibnu",
+      ],
+    },
+  ];
 
   return (
     <html

@@ -9,7 +9,12 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "Learn more about Rian Ibnu Rizal — Full Stack Web Developer & IT Support based in Indonesia.",
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id"}/about`,
+  },
 };
+
+export const dynamic = "force-dynamic";
 
 const interests = [
   "Full-stack developer",

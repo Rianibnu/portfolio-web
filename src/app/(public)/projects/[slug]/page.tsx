@@ -16,14 +16,50 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = await prisma.project.findUnique({ where: { slug } });
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id";
 
   if (!project) {
     return { title: "Project Not Found" };
   }
 
+  const projectUrl = `${baseUrl}/projects/${project.slug}`;
+
   return {
     title: project.title,
     description: project.description,
+    openGraph: {
+      title: project.title,
+      description: project.description,
+      url: projectUrl,
+      type: "article",
+      images: project.coverImage
+        ? [
+            {
+              url: project.coverImage.startsWith("http")
+                ? project.coverImage
+                : `${baseUrl}${project.coverImage}`,
+              width: 1200,
+              height: 630,
+              alt: project.title,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.description,
+      images: project.coverImage
+        ? [
+            project.coverImage.startsWith("http")
+              ? project.coverImage
+              : `${baseUrl}${project.coverImage}`,
+          ]
+        : [],
+    },
+    alternates: {
+      canonical: projectUrl,
+    },
   };
 }
 

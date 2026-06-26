@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cleanDescription = rawDescription.replace(/[#*`>]/g, "").trim() + "...";
   
   // Base URL (Make sure to set NEXT_PUBLIC_APP_URL in your .env, e.g., https://yourdomain.com)
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.com";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id";
   const postUrl = `${baseUrl}/blog/${post.slug}`;
 
   return {
@@ -118,7 +118,7 @@ export default async function BlogPostPage({ params }: Props) {
       })
     : [];
 
-  const postUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.com"}/blog/${post.slug}`;
+  const postUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id"}/blog/${post.slug}`;
 
   return (
     <div className="pt-24">
@@ -126,6 +126,35 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="container-custom grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Main Content Area */}
           <article className="lg:col-span-8 w-full max-w-3xl">
+            {/* Article Structured Data */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "Article",
+                  headline: post.title,
+                  description: post.excerpt || post.content.slice(0, 160).replace(/[#*`>]/g, "").trim(),
+                  image: post.thumbnail || undefined,
+                  datePublished: post.publishedAt.toISOString(),
+                  dateModified: post.updatedAt.toISOString(),
+                  author: {
+                    "@type": "Person",
+                    name: "Rian Ibnu Rizal",
+                    url: process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id",
+                  },
+                  publisher: {
+                    "@type": "Person",
+                    name: "Rian Ibnu Rizal",
+                  },
+                  mainEntityOfPage: {
+                    "@type": "WebPage",
+                    "@id": postUrl,
+                  },
+                  keywords: post.tags.join(", "),
+                }),
+              }}
+            />
             {/* Back Link */}
             <Link
               href="/blog"

@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Projects",
   description:
     "Explore my portfolio of web development projects showcasing full-stack skills.",
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_APP_URL || "https://rirstudio.my.id"}/projects`,
+  },
 };
 
 export const dynamic = "force-dynamic";
