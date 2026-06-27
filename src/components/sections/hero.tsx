@@ -57,6 +57,7 @@ export default function Hero({ projectCount }: { projectCount?: number }) {
 
           {/* Description */}
           <motion.p
+            data-nosnippet
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}

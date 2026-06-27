@@ -44,12 +44,21 @@ export const metadata: Metadata = {
     title: "Rian Ibnu Rizal — Full Stack Web Developer",
     description:
       "Full Stack Web Developer & IT Support. Ahli membangun solusi digital efisien menggunakan Laravel, VueJS, PostgreSQL, dan MySQL.",
+    images: [
+      {
+        url: "/images/profile.jpg",
+        width: 800,
+        height: 800,
+        alt: "Rian Ibnu Rizal Profile",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Rian Ibnu Rizal — Full Stack Web Developer",
     description:
       "Full Stack Web Developer & IT Support. Ahli membangun solusi digital efisien menggunakan Laravel, VueJS, PostgreSQL, dan MySQL.",
+    images: ["/images/profile.jpg"],
   },
   robots: {
     index: true,
@@ -107,8 +116,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script 
-          async 
+        <script
+          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7951305084468475"
           crossOrigin="anonymous"
         ></script>
