@@ -1,28 +1,10 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { uploadFile } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
 
-async function uploadFile(file: File): Promise<string> {
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  
-  const uploadDir = join(process.cwd(), "public/uploads");
-  try {
-    await mkdir(uploadDir, { recursive: true });
-  } catch (e) {
-    // ignore
-  }
-
-  const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-  const filepath = join(uploadDir, filename);
-  await writeFile(filepath, buffer);
-  
-  return `/uploads/${filename}`;
-}
 
 export async function createProject(formData: FormData) {
   const title = formData.get("title") as string;
