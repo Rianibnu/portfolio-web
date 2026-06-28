@@ -17,6 +17,6 @@ jobs:
           script: |
             cd /var/www/portfolio-web
             git pull origin master
-            npm install --production
+            npm install
             npm run build
             pm2 restart portfolio
