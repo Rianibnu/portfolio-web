@@ -39,7 +39,7 @@ export default async function FeaturedProjects() {
             let spanClass = "md:col-span-12";
             if (index === 0) spanClass = "md:col-span-8 lg:col-span-8";
             else if (index === 1) spanClass = "md:col-span-4 lg:col-span-4";
-            else if (index === 2) spanClass = "md:col-span-12 lg:col-span-12 lg:flex-row";
+            else if (index === 2) spanClass = "md:col-span-12 lg:col-span-12";
 
             return (
               <ProjectCard
